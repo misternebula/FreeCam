@@ -99,10 +99,12 @@ namespace FreeCam
 				base.ModHelper.Console.WriteLine(Locator.GetPlayerCamera().gameObject.name);
 				base.ModHelper.Console.WriteLine(Locator.GetPlayerCamera().gameObject.GetComponent<FlashbackScreenGrabImageEffect>().name);
 				temp._downsampleShader = Locator.GetPlayerCamera().gameObject.GetComponent<FlashbackScreenGrabImageEffect>()._downsampleShader;
+
 				PlanetaryFogImageEffect _image = _freeCam.AddComponent<PlanetaryFogImageEffect>();
 				base.ModHelper.Console.WriteLine(Locator.GetPlayerCamera().gameObject.name);
-				base.ModHelper.Console.WriteLine(Locator.GetPlayerCamera().gameObject.GetComponent<PlanetaryFogImageEffect>().name);
+				base.ModHelper.Console.WriteLine(Locator.GetPlayerCamera().gameObject.GetComponent<FlashbackScreenGrabImageEffect>().name);
 				_image.fogShader = Locator.GetPlayerCamera().gameObject.GetComponent<PlanetaryFogImageEffect>().fogShader;
+
 				_freeCam.SetActive(true);
 				_camera.cullingMask = Locator.GetPlayerCamera().mainCamera.cullingMask & ~(1 << 27) | (1 << 22);
 
