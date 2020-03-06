@@ -15,75 +15,40 @@ namespace FreeCam
 		public static float _moveSpeed = 7f;
 		InputMode _storedMode;
 
-		public static IModHelper helper;
-
 		public static bool inputEnabled = false;
 
 		bool mode = false;
-		private bool _enableStars;
 
 		// Token: 0x06000001 RID: 1 RVA: 0x00002050 File Offset: 0x00000250
 		public void Start()
 		{
-			base.ModHelper.Console.WriteLine("FreeCam!");
-
 			SceneManager.sceneLoaded += this.OnSceneLoaded;
-
-			helper = base.ModHelper;
 
 			base.ModHelper.Events.Subscribe<Flashlight>(Events.AfterStart);
 			IModEvents events = base.ModHelper.Events;
 			events.OnEvent = (Action<MonoBehaviour, Events>)Delegate.Combine(events.OnEvent, new Action<MonoBehaviour, Events>(this.OnEvent));
 		}
 
-		public override void Configure(IModConfig config)
-		{
-			_enableStars = config.GetSettingsValue<bool>("enableStars");
-		}
-
 		// Token: 0x06000002 RID: 2 RVA: 0x000020C8 File Offset: 0x000002C8
 		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 		{
-			if (SceneManager.GetActiveScene().name.Contains("SolarSystem"))
-			{
-				_freeCam = new GameObject();
-				_freeCam.SetActive(false);
-				_camera = _freeCam.AddComponent<Camera>();
-				_camera.clearFlags = CameraClearFlags.Color;
-				_camera.backgroundColor = Color.black;
-				_camera.fieldOfView = 90f;
-				_camera.nearClipPlane = 0.1f;
-				_camera.farClipPlane = 40000f;
-				_camera.depth = 0f;
-				_camera.enabled = false;
+			_freeCam = new GameObject();
+			_freeCam.SetActive(false);
+			_camera = _freeCam.AddComponent<Camera>();
+			_camera.clearFlags = CameraClearFlags.Color;
+			_camera.backgroundColor = Color.black;
+			_camera.fieldOfView = 90f;
+			_camera.nearClipPlane = 0.1f;
+			_camera.farClipPlane = 40000f;
+			_camera.depth = 0f;
+			_camera.enabled = false;
 
 
-				_freeCam.AddComponent<CustomLookAround>();
-				_OWCamera = _freeCam.AddComponent<OWCamera>();
-				_OWCamera.renderSkybox = true;
+			_freeCam.AddComponent<CustomLookAround>();
+			_OWCamera = _freeCam.AddComponent<OWCamera>();
+			_OWCamera.renderSkybox = true;
 
-				_freeCam.SetActive(true);
-			}
-			else
-			{
-				_freeCam = new GameObject();
-				_freeCam.SetActive(false);
-				_camera = _freeCam.AddComponent<Camera>();
-				_camera.clearFlags = CameraClearFlags.Color;
-				_camera.backgroundColor = Color.black;
-				_camera.fieldOfView = 90f;
-				_camera.nearClipPlane = 0.1f;
-				_camera.farClipPlane = 40000f;
-				_camera.depth = 0f;
-				_camera.enabled = false;
-
-
-				_freeCam.AddComponent<CustomLookAround>();
-				_OWCamera = _freeCam.AddComponent<OWCamera>();
-				_OWCamera.renderSkybox = true;
-
-				_freeCam.SetActive(true);
-			}
+			_freeCam.SetActive(true);
 		}
 
 		// Token: 0x06000003 RID: 3 RVA: 0x00002228 File Offset: 0x00000428
