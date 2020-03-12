@@ -57,11 +57,15 @@ namespace FreeCam
 		// Token: 0x06000003 RID: 3 RVA: 0x00002228 File Offset: 0x00000428
 		private void OnEvent(MonoBehaviour behaviour, Events ev)
 		{
-			bool flag = behaviour.GetType() == typeof(Flashlight) && ev == Events.AfterStart;
-			if (flag)
+			if (LoadManager.GetCurrentScene() == OWScene.SolarSystem)
 			{
-				SetupCamera();
+				bool flag = behaviour.GetType() == typeof(Flashlight) && ev == Events.AfterStart;
+				if (flag)
+				{
+					SetupCamera();
+				}
 			}
+			base.ModHelper.Console.WriteLine(behaviour.name);
 		}
 
 		public override void Configure(IModConfig config)
@@ -85,7 +89,15 @@ namespace FreeCam
 			}
 			else
 			{
-				_freeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject.transform;
+				if (LoadManager.GetCurrentScene() == OWScene.SolarSystem)
+				{
+					_freeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject.transform;
+				}
+				else
+				{
+					_freeCam.transform.parent = Locator.GetPlayerTransform();
+				}
+
 				_freeCam.transform.position = Locator.GetPlayerTransform().position;
 				_freeCam.SetActive(false);
 				FlashbackScreenGrabImageEffect temp = _freeCam.AddComponent<FlashbackScreenGrabImageEffect>();
@@ -109,6 +121,11 @@ namespace FreeCam
 		{
 			if (inputEnabled)
 			{
+				if (Input.GetKeyDown(KeyCode.UpArrow))
+				{
+					SetupCamera();
+				}
+
 				if (Input.GetKeyDown(KeyCode.KeypadDivide))
 				{
 					Time.timeScale = 0f;
