@@ -19,6 +19,9 @@ namespace FreeCam
 
 		bool mode = false;
 
+		public bool _disableLauncher;
+		public int _fov;
+
 		// Token: 0x06000001 RID: 1 RVA: 0x00002050 File Offset: 0x00000250
 		public void Start()
 		{
@@ -57,6 +60,31 @@ namespace FreeCam
 			bool flag = behaviour.GetType() == typeof(Flashlight) && ev == Events.AfterStart;
 			if (flag)
 			{
+				SetupCamera();
+			}
+		}
+
+		public override void Configure(IModConfig config)
+		{
+			this._disableLauncher = config.GetSettingsValue<bool>("disableLauncher");
+			this._fov = config.GetSettingsValue<int>("fov");
+		}
+
+		private void SetupCamera()
+		{
+			bool disableLauncher = this._disableLauncher;
+			if (disableLauncher)
+			{
+				GameObject.Find("ProbeLauncher").SetActive(false);
+				base.ModHelper.Console.WriteLine("[FreeCam] : Launcher off!");
+			}
+
+			if (_freeCam.name == "FREECAM")
+			{
+				base.ModHelper.Console.WriteLine("[FreeCam] : Already set up! Aborting...");
+			}
+			else
+			{
 				_freeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject.transform;
 				_freeCam.transform.position = Locator.GetPlayerTransform().position;
 				_freeCam.SetActive(false);
@@ -73,6 +101,7 @@ namespace FreeCam
 				_freeCam.SetActive(true);
 				_camera.cullingMask = Locator.GetPlayerCamera().mainCamera.cullingMask & ~(1 << 27) | (1 << 22);
 
+				_freeCam.name = "FREECAM";
 			}
 		}
 
