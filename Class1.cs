@@ -76,11 +76,12 @@ namespace FreeCam
 
 		private void SetupCamera()
 		{
-			bool disableLauncher = this._disableLauncher;
-			if (disableLauncher)
+			if (_disableLauncher)
 			{
 				GameObject.Find("ProbeLauncher").SetActive(false);
 				base.ModHelper.Console.WriteLine("[FreeCam] : Launcher off!");
+				GameObject.Find("ProbeLauncher").SetActive(false);
+				base.ModHelper.Console.WriteLine("[FreeCam] : Visor off!");
 			}
 
 			if (_freeCam.name == "FREECAM")
@@ -124,6 +125,18 @@ namespace FreeCam
 				if (Input.GetKeyDown(KeyCode.UpArrow))
 				{
 					SetupCamera();
+				}
+
+				if (Input.GetKeyDown(KeyCode.LeftArrow))
+				{
+					if (Locator.GetPlayerSuit().IsWearingHelmet())
+					{
+						Locator.GetPlayerSuit().RemoveHelmet();
+					}
+					else
+					{
+						Locator.GetPlayerSuit().PutOnHelmet();
+					}
 				}
 
 				if (Input.GetKeyDown(KeyCode.KeypadDivide))
