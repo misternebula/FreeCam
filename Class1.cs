@@ -2,11 +2,11 @@
 using OWML.Common;
 using OWML.ModHelper;
 using UnityEngine;
+using UnityEngine.PostProcessing;
 using UnityEngine.SceneManagement;
 
 namespace FreeCam
 {
-	// Token: 0x02000002 RID: 2
 	class MainClass : ModBehaviour
 	{
 		public static GameObject _freeCam;
@@ -22,7 +22,6 @@ namespace FreeCam
 		public bool _disableLauncher;
 		public int _fov;
 
-		// Token: 0x06000001 RID: 1 RVA: 0x00002050 File Offset: 0x00000250
 		public void Start()
 		{
 			SceneManager.sceneLoaded += this.OnSceneLoaded;
@@ -32,7 +31,6 @@ namespace FreeCam
 			events.OnEvent = (Action<MonoBehaviour, Events>)Delegate.Combine(events.OnEvent, new Action<MonoBehaviour, Events>(this.OnEvent));
 		}
 
-		// Token: 0x06000002 RID: 2 RVA: 0x000020C8 File Offset: 0x000002C8
 		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 		{
 			_freeCam = new GameObject();
@@ -54,7 +52,6 @@ namespace FreeCam
 			_freeCam.SetActive(true);
 		}
 
-		// Token: 0x06000003 RID: 3 RVA: 0x00002228 File Offset: 0x00000428
 		private void OnEvent(MonoBehaviour behaviour, Events ev)
 		{
 			if (LoadManager.GetCurrentScene() == OWScene.SolarSystem)
@@ -101,15 +98,15 @@ namespace FreeCam
 
 				_freeCam.transform.position = Locator.GetPlayerTransform().position;
 				_freeCam.SetActive(false);
+
 				FlashbackScreenGrabImageEffect temp = _freeCam.AddComponent<FlashbackScreenGrabImageEffect>();
-				base.ModHelper.Console.WriteLine(Locator.GetPlayerCamera().gameObject.name);
-				base.ModHelper.Console.WriteLine(Locator.GetPlayerCamera().gameObject.GetComponent<FlashbackScreenGrabImageEffect>().name);
 				temp._downsampleShader = Locator.GetPlayerCamera().gameObject.GetComponent<FlashbackScreenGrabImageEffect>()._downsampleShader;
 
 				PlanetaryFogImageEffect _image = _freeCam.AddComponent<PlanetaryFogImageEffect>();
-				base.ModHelper.Console.WriteLine(Locator.GetPlayerCamera().gameObject.name);
-				base.ModHelper.Console.WriteLine(Locator.GetPlayerCamera().gameObject.GetComponent<FlashbackScreenGrabImageEffect>().name);
 				_image.fogShader = Locator.GetPlayerCamera().gameObject.GetComponent<PlanetaryFogImageEffect>().fogShader;
+
+                PostProcessingBehaviour _postProcessiong = _freeCam.AddComponent<PostProcessingBehaviour>();
+                _postProcessiong.profile = Locator.GetPlayerCamera().gameObject.GetAddComponent<PostProcessingBehaviour>().profile;
 
 				_freeCam.SetActive(true);
 				_camera.cullingMask = Locator.GetPlayerCamera().mainCamera.cullingMask & ~(1 << 27) | (1 << 22);
@@ -135,7 +132,7 @@ namespace FreeCam
 					}
 					else
 					{
-						Locator.GetPlayerSuit().PutOnHelmet();
+                        Locator.GetPlayerSuit().PutOnHelmet();
 					}
 				}
 

@@ -13,11 +13,6 @@ namespace FreeCam
 
         protected float _degreesY;
 
-		private Quaternion _rotationX;
-
-		private Quaternion _rotationY;
-
-		// Use this for initialization
 		void Start()
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -28,7 +23,6 @@ namespace FreeCam
 			Debug.LogWarning("Awake!");
 		}
 
-        // Update is called once per frame
         void Update()
         {
 			if (OWInput.GetInputMode() == InputMode.None)
