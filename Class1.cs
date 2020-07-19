@@ -12,7 +12,7 @@ namespace FreeCam
 		public static GameObject _freeCam;
 		public static Camera _camera;
 		OWCamera _OWCamera;
-		public static float _moveSpeed = 7f;
+		public static float _moveSpeed = .1f;
 		InputMode _storedMode;
 
 		public static bool inputEnabled = false;
@@ -203,12 +203,12 @@ namespace FreeCam
 
 				if (Input.GetKeyDown(KeyCode.KeypadPlus))
 				{
-					_moveSpeed = 7f;
+					_moveSpeed *= 2f;
 				}
 
 				if (Input.GetKeyDown(KeyCode.KeypadEnter))
 				{
-					_moveSpeed = 1000f;
+					_moveSpeed /= 2f;
 				}
 
 				if (Input.GetKeyDown(KeyCode.KeypadPeriod))
