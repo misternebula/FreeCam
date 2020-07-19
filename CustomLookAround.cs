@@ -10,7 +10,6 @@ namespace FreeCam
     {
 
         protected float _degreesX;
-
         protected float _degreesY;
 		protected float _moveX;
 		protected float _moveY;
@@ -20,11 +19,6 @@ namespace FreeCam
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
-
-		void Awake()
-		{
-			Debug.LogWarning("Awake!");
-		}
 
         void Update()
         {
@@ -47,26 +41,6 @@ namespace FreeCam
 				else
 				{
 					_boost = 1;
-				}
-
-				if (Input.GetKey(KeyCode.W))
-				{
-					MainClass._freeCam.transform.position += MainClass._freeCam.transform.forward * 0.02f * MainClass._moveSpeed;
-				}
-
-				if (Input.GetKey(KeyCode.S))
-				{
-					MainClass._freeCam.transform.position -= MainClass._freeCam.transform.forward * 0.02f * MainClass._moveSpeed;
-				}
-
-				if (Input.GetKey(KeyCode.A))
-				{
-					MainClass._freeCam.transform.position -= MainClass._freeCam.transform.right * 0.02f * MainClass._moveSpeed;
-				}
-
-				if (Input.GetKey(KeyCode.D))
-				{
-					MainClass._freeCam.transform.position += MainClass._freeCam.transform.right * 0.02f * MainClass._moveSpeed;
 				}
 
 				if (Input.GetKey(KeyCode.Q))

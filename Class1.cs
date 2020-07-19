@@ -11,16 +11,13 @@ namespace FreeCam
 	{
 		public static GameObject _freeCam;
 		public static Camera _camera;
-		OWCamera _OWCamera;
-		public static float _moveSpeed = .1f;
+        public static float _moveSpeed = 0.1f;
+        OWCamera _OWCamera;
 		InputMode _storedMode;
-
-		public static bool inputEnabled = false;
-
+		static bool inputEnabled = false;
 		bool mode = false;
-
-		public bool _disableLauncher;
-		public int _fov;
+		bool _disableLauncher;
+		int _fov;
 
 		public void Start()
 		{
@@ -124,7 +121,12 @@ namespace FreeCam
 					SetupCamera();
 				}
 
-				if (Input.GetKeyDown(KeyCode.LeftArrow))
+                if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    _moveSpeed = 0.1f;
+                }
+
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
 				{
 					if (Locator.GetPlayerSuit().IsWearingHelmet())
 					{
