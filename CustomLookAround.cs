@@ -10,18 +10,15 @@ namespace FreeCam
     {
 
         protected float _degreesX;
-
         protected float _degreesY;
+		protected float _moveX;
+		protected float _moveY;
+		protected float _boost = 1f;
 
 		void Start()
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
-
-		void Awake()
-		{
-			Debug.LogWarning("Awake!");
-		}
 
         void Update()
         {
@@ -29,53 +26,21 @@ namespace FreeCam
 			{
 				this._degreesY = OWInput.GetValue(InputLibrary.look, InputMode.All).y * 2f;
 				this._degreesX = OWInput.GetValue(InputLibrary.look, InputMode.All).x * 2f;
+				this._moveX = OWInput.GetValue(InputLibrary.moveXZ, InputMode.All).x;
+				this._moveY = OWInput.GetValue(InputLibrary.moveXZ, InputMode.All).y;
 
 				MainClass._camera.transform.Rotate(Vector3.up, _degreesX);
 				MainClass._camera.transform.Rotate(Vector3.right, -_degreesY);
+				MainClass._freeCam.transform.position += _moveY * ((MainClass._freeCam.transform.forward * 0.02f * MainClass._moveSpeed) * _boost);
+				MainClass._freeCam.transform.position += _moveX * ((MainClass._freeCam.transform.right * 0.02f * MainClass._moveSpeed) * _boost);
 
 				if (Input.GetKey(KeyCode.LeftShift))
 				{
-					if (MainClass._moveSpeed == 7f)
-					{
-						MainClass._moveSpeed = 14f;
-					}
-
-					if (MainClass._moveSpeed == 1000f)
-					{
-						MainClass._moveSpeed = 2000;
-					}
+					_boost = 2;
 				}
 				else
 				{
-					if (MainClass._moveSpeed == 14f)
-					{
-						MainClass._moveSpeed = 7f;
-					}
-
-					if (MainClass._moveSpeed == 2000f)
-					{
-						MainClass._moveSpeed = 1000;
-					}
-				}
-
-				if (Input.GetKey(KeyCode.W))
-				{
-					MainClass._freeCam.transform.position += MainClass._freeCam.transform.forward * 0.02f * MainClass._moveSpeed;
-				}
-
-				if (Input.GetKey(KeyCode.S))
-				{
-					MainClass._freeCam.transform.position -= MainClass._freeCam.transform.forward * 0.02f * MainClass._moveSpeed;
-				}
-
-				if (Input.GetKey(KeyCode.A))
-				{
-					MainClass._freeCam.transform.position -= MainClass._freeCam.transform.right * 0.02f * MainClass._moveSpeed;
-				}
-
-				if (Input.GetKey(KeyCode.D))
-				{
-					MainClass._freeCam.transform.position += MainClass._freeCam.transform.right * 0.02f * MainClass._moveSpeed;
+					_boost = 1;
 				}
 
 				if (Input.GetKey(KeyCode.Q))
