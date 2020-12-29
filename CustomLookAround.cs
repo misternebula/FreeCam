@@ -1,34 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace FreeCam
 {
-    class CustomLookAround : MonoBehaviour
+    public class CustomLookAround : MonoBehaviour
     {
+		private float _degreesX;
+		private float _degreesY;
 
-        protected float _degreesX;
-
-        protected float _degreesY;
-
-		void Start()
+		public void Start()
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-		void Awake()
+		public void Awake()
 		{
 			Debug.LogWarning("Awake!");
 		}
 
-        void Update()
+		public void Update()
         {
 			if (OWInput.GetInputMode() == InputMode.None)
 			{
-				this._degreesY = OWInput.GetValue(InputLibrary.look, InputMode.All).y * 2f;
-				this._degreesX = OWInput.GetValue(InputLibrary.look, InputMode.All).x * 2f;
+				_degreesY = OWInput.GetValue(InputLibrary.look).y * 2f;
+				_degreesX = OWInput.GetValue(InputLibrary.look).x * 2f;
 
 				MainClass._camera.transform.Rotate(Vector3.up, _degreesX);
 				MainClass._camera.transform.Rotate(Vector3.right, -_degreesY);

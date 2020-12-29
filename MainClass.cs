@@ -1,5 +1,4 @@
-﻿using System;
-using OWML.Common;
+﻿using OWML.Common;
 using OWML.ModHelper;
 using UnityEngine;
 using UnityEngine.PostProcessing;
@@ -7,28 +6,26 @@ using UnityEngine.SceneManagement;
 
 namespace FreeCam
 {
-	class MainClass : ModBehaviour
+	public class MainClass : ModBehaviour
 	{
 		public static GameObject _freeCam;
 		public static Camera _camera;
-		OWCamera _OWCamera;
 		public static float _moveSpeed = 7f;
-		InputMode _storedMode;
-
-		public static bool inputEnabled = false;
-
-		bool mode = false;
-
+		public static bool inputEnabled;
+		
 		public bool _disableLauncher;
 		public int _fov;
 
+		private OWCamera _owCamera;
+		private bool _mode;
+		private InputMode _storedMode;
+
 		public void Start()
 		{
-			SceneManager.sceneLoaded += this.OnSceneLoaded;
+			SceneManager.sceneLoaded += OnSceneLoaded;
 
-			base.ModHelper.Events.Subscribe<Flashlight>(Events.AfterStart);
-			IModEvents events = base.ModHelper.Events;
-			events.OnEvent = (Action<MonoBehaviour, Events>)Delegate.Combine(events.OnEvent, new Action<MonoBehaviour, Events>(this.OnEvent));
+			ModHelper.Events.Subscribe<Flashlight>(Events.AfterStart);
+			ModHelper.Events.Event += OnEvent;
 		}
 
 		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -44,10 +41,9 @@ namespace FreeCam
 			_camera.depth = 0f;
 			_camera.enabled = false;
 
-
 			_freeCam.AddComponent<CustomLookAround>();
-			_OWCamera = _freeCam.AddComponent<OWCamera>();
-			_OWCamera.renderSkybox = true;
+			_owCamera = _freeCam.AddComponent<OWCamera>();
+			_owCamera.renderSkybox = true;
 
 			_freeCam.SetActive(true);
 		}
@@ -56,19 +52,19 @@ namespace FreeCam
 		{
 			if (LoadManager.GetCurrentScene() == OWScene.SolarSystem)
 			{
-				bool flag = behaviour.GetType() == typeof(Flashlight) && ev == Events.AfterStart;
+				var flag = behaviour.GetType() == typeof(Flashlight) && ev == Events.AfterStart;
 				if (flag)
 				{
 					SetupCamera();
 				}
 			}
-			base.ModHelper.Console.WriteLine(behaviour.name);
+			ModHelper.Console.WriteLine(behaviour.name);
 		}
 
 		public override void Configure(IModConfig config)
 		{
-			this._disableLauncher = config.GetSettingsValue<bool>("disableLauncher");
-			this._fov = config.GetSettingsValue<int>("fov");
+			_disableLauncher = config.GetSettingsValue<bool>("disableLauncher");
+			_fov = config.GetSettingsValue<int>("fov");
 		}
 
 		private void SetupCamera()
@@ -76,14 +72,14 @@ namespace FreeCam
 			if (_disableLauncher)
 			{
 				GameObject.Find("ProbeLauncher").SetActive(false);
-				base.ModHelper.Console.WriteLine("[FreeCam] : Launcher off!");
+				ModHelper.Console.WriteLine("[FreeCam] : Launcher off!");
 				GameObject.Find("ProbeLauncher").SetActive(false);
-				base.ModHelper.Console.WriteLine("[FreeCam] : Visor off!");
+				ModHelper.Console.WriteLine("[FreeCam] : Visor off!");
 			}
 
 			if (_freeCam.name == "FREECAM")
 			{
-				base.ModHelper.Console.WriteLine("[FreeCam] : Already set up! Aborting...");
+				ModHelper.Console.WriteLine("[FreeCam] : Already set up! Aborting...");
 			}
 			else
 			{
@@ -99,13 +95,13 @@ namespace FreeCam
 				_freeCam.transform.position = Locator.GetPlayerTransform().position;
 				_freeCam.SetActive(false);
 
-				FlashbackScreenGrabImageEffect temp = _freeCam.AddComponent<FlashbackScreenGrabImageEffect>();
+				var temp = _freeCam.AddComponent<FlashbackScreenGrabImageEffect>();
 				temp._downsampleShader = Locator.GetPlayerCamera().gameObject.GetComponent<FlashbackScreenGrabImageEffect>()._downsampleShader;
 
-				PlanetaryFogImageEffect _image = _freeCam.AddComponent<PlanetaryFogImageEffect>();
+				var _image = _freeCam.AddComponent<PlanetaryFogImageEffect>();
 				_image.fogShader = Locator.GetPlayerCamera().gameObject.GetComponent<PlanetaryFogImageEffect>().fogShader;
 
-                PostProcessingBehaviour _postProcessiong = _freeCam.AddComponent<PostProcessingBehaviour>();
+                var _postProcessiong = _freeCam.AddComponent<PostProcessingBehaviour>();
                 _postProcessiong.profile = Locator.GetPlayerCamera().gameObject.GetAddComponent<PostProcessingBehaviour>().profile;
 
 				_freeCam.SetActive(true);
@@ -115,7 +111,7 @@ namespace FreeCam
 			}
 		}
 
-		void Update()
+		public void Update()
 		{
 			if (inputEnabled)
 			{
@@ -213,9 +209,9 @@ namespace FreeCam
 
 				if (Input.GetKeyDown(KeyCode.KeypadPeriod))
 				{
-					if (mode)
+					if (_mode)
 					{
-						mode = false;
+						_mode = false;
 						if (_storedMode == InputMode.None)
 						{
 							_storedMode = InputMode.Character;
@@ -227,10 +223,10 @@ namespace FreeCam
 					}
 					else
 					{
-						mode = true;
+						_mode = true;
 						_storedMode = OWInput.GetInputMode();
 						OWInput.ChangeInputMode(InputMode.None);
-						GlobalMessenger<OWCamera>.FireEvent("SwitchActiveCamera", _OWCamera);
+						GlobalMessenger<OWCamera>.FireEvent("SwitchActiveCamera", _owCamera);
 						Locator.GetActiveCamera().mainCamera.enabled = false;
 						_camera.enabled = true;
 					}

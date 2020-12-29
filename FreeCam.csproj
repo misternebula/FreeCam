@@ -91,7 +91,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="MainClass.cs" />
     <Compile Include="CustomLookAround.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
