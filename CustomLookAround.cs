@@ -24,62 +24,62 @@ namespace FreeCam
 				_degreesY = OWInput.GetValue(InputLibrary.look).y * 2f;
 				_degreesX = OWInput.GetValue(InputLibrary.look).x * 2f;
 
-				MainClass._camera.transform.Rotate(Vector3.up, _degreesX);
-				MainClass._camera.transform.Rotate(Vector3.right, -_degreesY);
+				MainClass.Camera.transform.Rotate(Vector3.up, _degreesX);
+				MainClass.Camera.transform.Rotate(Vector3.right, -_degreesY);
 
 				if (Input.GetKey(KeyCode.LeftShift))
 				{
-					if (MainClass._moveSpeed == 7f)
+					if (MainClass.MoveSpeed == 7f)
 					{
-						MainClass._moveSpeed = 14f;
+						MainClass.MoveSpeed = 14f;
 					}
 
-					if (MainClass._moveSpeed == 1000f)
+					if (MainClass.MoveSpeed == 1000f)
 					{
-						MainClass._moveSpeed = 2000;
+						MainClass.MoveSpeed = 2000;
 					}
 				}
 				else
 				{
-					if (MainClass._moveSpeed == 14f)
+					if (MainClass.MoveSpeed == 14f)
 					{
-						MainClass._moveSpeed = 7f;
+						MainClass.MoveSpeed = 7f;
 					}
 
-					if (MainClass._moveSpeed == 2000f)
+					if (MainClass.MoveSpeed == 2000f)
 					{
-						MainClass._moveSpeed = 1000;
+						MainClass.MoveSpeed = 1000;
 					}
 				}
 
 				if (Input.GetKey(KeyCode.W))
 				{
-					MainClass._freeCam.transform.position += MainClass._freeCam.transform.forward * 0.02f * MainClass._moveSpeed;
+					MainClass.FreeCam.transform.position += MainClass.FreeCam.transform.forward * 0.02f * MainClass.MoveSpeed;
 				}
 
 				if (Input.GetKey(KeyCode.S))
 				{
-					MainClass._freeCam.transform.position -= MainClass._freeCam.transform.forward * 0.02f * MainClass._moveSpeed;
+					MainClass.FreeCam.transform.position -= MainClass.FreeCam.transform.forward * 0.02f * MainClass.MoveSpeed;
 				}
 
 				if (Input.GetKey(KeyCode.A))
 				{
-					MainClass._freeCam.transform.position -= MainClass._freeCam.transform.right * 0.02f * MainClass._moveSpeed;
+					MainClass.FreeCam.transform.position -= MainClass.FreeCam.transform.right * 0.02f * MainClass.MoveSpeed;
 				}
 
 				if (Input.GetKey(KeyCode.D))
 				{
-					MainClass._freeCam.transform.position += MainClass._freeCam.transform.right * 0.02f * MainClass._moveSpeed;
+					MainClass.FreeCam.transform.position += MainClass.FreeCam.transform.right * 0.02f * MainClass.MoveSpeed;
 				}
 
 				if (Input.GetKey(KeyCode.Q))
 				{
-					MainClass._freeCam.transform.Rotate(Vector3.forward, 1);
+					MainClass.FreeCam.transform.Rotate(Vector3.forward, 1);
 				}
 
 				if (Input.GetKey(KeyCode.E))
 				{
-					MainClass._freeCam.transform.Rotate(Vector3.forward, -1);
+					MainClass.FreeCam.transform.Rotate(Vector3.forward, -1);
 				}
 			}
 		}
