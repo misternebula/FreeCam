@@ -7,15 +7,9 @@ namespace FreeCam
 		private float _degreesX;
 		private float _degreesY;
 
-		public void Start()
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+		public void Start() => Cursor.lockState = CursorLockMode.Locked;
 
-		public void Awake()
-		{
-			Debug.LogWarning("Awake!");
-		}
+		public void Awake() => Debug.LogWarning("Awake!");
 
 		public void Update()
 		{

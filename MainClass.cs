@@ -208,7 +208,7 @@ namespace FreeCam
 			{
 				return;
 			}
-			
+
 			if (_mode)
 			{
 				_mode = false;
@@ -232,14 +232,8 @@ namespace FreeCam
 			}
 		}
 
-		public static void MNActivateInput()
-		{
-			InputEnabled = true;
-		}
+		public static void MNActivateInput() => InputEnabled = true;
 
-		public static void MNDeactivateInput()
-		{
-			InputEnabled = false;
-		}
+		public static void MNDeactivateInput() => InputEnabled = false;
 	}
 }
