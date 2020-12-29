@@ -131,84 +131,103 @@ namespace FreeCam
 
 			if (Input.GetKeyDown(KeyCode.KeypadDivide) || Input.GetKeyDown(KeyCode.Slash))
 			{
+				ModHelper.Console.WriteLine("Hit KeypadDivide or Slash", MessageType.Debug);
 				Time.timeScale = 0f;
 			}
 
 			if (Input.GetKeyDown(KeyCode.KeypadMultiply) || Input.GetKeyDown(KeyCode.Asterisk))
 			{
+				ModHelper.Console.WriteLine("Hit KeypadMultiply or Asterisk", MessageType.Debug);
 				Time.timeScale = 0.5f;
 			}
 
 			if (Input.GetKeyDown(KeyCode.KeypadMinus) || Input.GetKeyDown(KeyCode.Minus))
 			{
+				ModHelper.Console.WriteLine("Hit KeypadMinus or Minus", MessageType.Debug);
 				Time.timeScale = 1f;
 			}
 
 			if (Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0))
 			{
+				ModHelper.Console.WriteLine("Hit Keypad0 or Alpha0", MessageType.Debug);
 				FreeCam.transform.parent = Locator.GetPlayerTransform();
 			}
 
 			if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))
 			{
+				ModHelper.Console.WriteLine("Hit Keypad1 or Alpha1", MessageType.Debug);
 				FreeCam.transform.parent = Locator.GetSunTransform();
 			}
 
 			if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2))
 			{
+				ModHelper.Console.WriteLine("Hit Keypad2 or Alpha2", MessageType.Debug);
 				FreeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.Comet).gameObject.transform;
 			}
 
 			if (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3))
-			{
+			{ 
+				ModHelper.Console.WriteLine("Hit Keypad3 or Alpha3", MessageType.Debug);
 				FreeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.CaveTwin).gameObject.transform;
 			}
 
 			if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4))
 			{
+				ModHelper.Console.WriteLine("Hit Keypad4 or Alpha4", MessageType.Debug);
 				FreeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.TowerTwin).gameObject.transform;
 			}
 
 			if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5))
 			{
+				ModHelper.Console.WriteLine("Hit Keypad5 or Alpha5", MessageType.Debug);
 				FreeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject.transform;
 			}
 
 			if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6))
 			{
+				ModHelper.Console.WriteLine("Hit Keypad6 or Alpha6", MessageType.Debug);
 				FreeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.BrittleHollow).gameObject.transform;
 			}
 
 			if (Input.GetKeyDown(KeyCode.Keypad7) || Input.GetKeyDown(KeyCode.Alpha7))
 			{
+				ModHelper.Console.WriteLine("Hit Keypad7 or Alpha7", MessageType.Debug);
 				FreeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.GiantsDeep).gameObject.transform;
 			}
 
 			if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.Alpha8))
 			{
+				ModHelper.Console.WriteLine("Hit Keypad8 or Alpha8", MessageType.Debug);
 				FreeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.DarkBramble).gameObject.transform;
 			}
 
 			if (Input.GetKeyDown(KeyCode.Keypad9) || Input.GetKeyDown(KeyCode.Alpha9))
 			{
+				ModHelper.Console.WriteLine("Hit Keypad9 or Alpha9", MessageType.Debug);
 				FreeCam.transform.position = Locator.GetPlayerTransform().position;
 			}
 
 			if (Input.GetKeyDown(KeyCode.KeypadPlus) || Input.GetKeyDown(KeyCode.Plus))
 			{
+				ModHelper.Console.WriteLine("Hit KeypadPlus or Plus", MessageType.Debug);
 				MoveSpeed = 7f;
 			}
 
 			if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
 			{
+				ModHelper.Console.WriteLine("Hit KeypadEnter or Return", MessageType.Debug);
 				MoveSpeed = 1000f;
 			}
 
-			if (!Input.GetKeyDown(KeyCode.KeypadPeriod) && !Input.GetKeyDown(KeyCode.Period))
+			if (Input.GetKeyDown(KeyCode.KeypadPeriod) || Input.GetKeyDown(KeyCode.Period))
 			{
-				return;
+				ModHelper.Console.WriteLine("Hit KeypadPeriod or Period", MessageType.Debug);
+				ToggleMode();
 			}
+		}
 
+		private void ToggleMode()
+		{
 			if (_mode)
 			{
 				_mode = false;
@@ -216,6 +235,7 @@ namespace FreeCam
 				{
 					_storedMode = InputMode.Character;
 				}
+
 				OWInput.ChangeInputMode(_storedMode);
 				GlobalMessenger<OWCamera>.FireEvent("SwitchActiveCamera", Locator.GetPlayerCamera());
 				Camera.enabled = false;
