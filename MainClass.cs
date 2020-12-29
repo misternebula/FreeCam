@@ -90,14 +90,14 @@ namespace FreeCam
 			FreeCam.transform.position = Locator.GetPlayerTransform().position;
 			FreeCam.SetActive(false);
 
-			var temp = FreeCam.AddComponent<FlashbackScreenGrabImageEffect>();
-			temp._downsampleShader = Locator.GetPlayerCamera().gameObject.GetComponent<FlashbackScreenGrabImageEffect>()._downsampleShader;
+			FreeCam.AddComponent<FlashbackScreenGrabImageEffect>()._downsampleShader =
+				Locator.GetPlayerCamera().gameObject.GetComponent<FlashbackScreenGrabImageEffect>()._downsampleShader;
 
-			var _image = FreeCam.AddComponent<PlanetaryFogImageEffect>();
-			_image.fogShader = Locator.GetPlayerCamera().gameObject.GetComponent<PlanetaryFogImageEffect>().fogShader;
+			FreeCam.AddComponent<PlanetaryFogImageEffect>().fogShader =
+				Locator.GetPlayerCamera().gameObject.GetComponent<PlanetaryFogImageEffect>().fogShader;
 
-			var _postProcessing = FreeCam.AddComponent<PostProcessingBehaviour>();
-			_postProcessing.profile = Locator.GetPlayerCamera().gameObject.GetAddComponent<PostProcessingBehaviour>().profile;
+			FreeCam.AddComponent<PostProcessingBehaviour>().profile =
+				Locator.GetPlayerCamera().gameObject.GetAddComponent<PostProcessingBehaviour>().profile;
 
 			FreeCam.SetActive(true);
 			Camera.cullingMask = Locator.GetPlayerCamera().mainCamera.cullingMask & ~(1 << 27) | (1 << 22);
