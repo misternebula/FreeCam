@@ -129,82 +129,82 @@ namespace FreeCam
 				}
 			}
 
-			if (Input.GetKeyDown(KeyCode.KeypadDivide))
+			if (Input.GetKeyDown(KeyCode.KeypadDivide) || Input.GetKeyDown(KeyCode.Slash))
 			{
 				Time.timeScale = 0f;
 			}
 
-			if (Input.GetKeyDown(KeyCode.KeypadMultiply))
+			if (Input.GetKeyDown(KeyCode.KeypadMultiply) || Input.GetKeyDown(KeyCode.Asterisk))
 			{
 				Time.timeScale = 0.5f;
 			}
 
-			if (Input.GetKeyDown(KeyCode.KeypadMinus))
+			if (Input.GetKeyDown(KeyCode.KeypadMinus) || Input.GetKeyDown(KeyCode.Minus))
 			{
 				Time.timeScale = 1f;
 			}
 
-			if (Input.GetKeyDown(KeyCode.Keypad0))
+			if (Input.GetKeyDown(KeyCode.Keypad0) || Input.GetKeyDown(KeyCode.Alpha0))
 			{
 				FreeCam.transform.parent = Locator.GetPlayerTransform();
 			}
 
-			if (Input.GetKeyDown(KeyCode.Keypad1))
+			if (Input.GetKeyDown(KeyCode.Keypad1) || Input.GetKeyDown(KeyCode.Alpha1))
 			{
 				FreeCam.transform.parent = Locator.GetSunTransform();
 			}
 
-			if (Input.GetKeyDown(KeyCode.Keypad2))
+			if (Input.GetKeyDown(KeyCode.Keypad2) || Input.GetKeyDown(KeyCode.Alpha2))
 			{
 				FreeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.Comet).gameObject.transform;
 			}
 
-			if (Input.GetKeyDown(KeyCode.Keypad3))
+			if (Input.GetKeyDown(KeyCode.Keypad3) || Input.GetKeyDown(KeyCode.Alpha3))
 			{
 				FreeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.CaveTwin).gameObject.transform;
 			}
 
-			if (Input.GetKeyDown(KeyCode.Keypad4))
+			if (Input.GetKeyDown(KeyCode.Keypad4) || Input.GetKeyDown(KeyCode.Alpha4))
 			{
 				FreeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.TowerTwin).gameObject.transform;
 			}
 
-			if (Input.GetKeyDown(KeyCode.Keypad5))
+			if (Input.GetKeyDown(KeyCode.Keypad5) || Input.GetKeyDown(KeyCode.Alpha5))
 			{
 				FreeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject.transform;
 			}
 
-			if (Input.GetKeyDown(KeyCode.Keypad6))
+			if (Input.GetKeyDown(KeyCode.Keypad6) || Input.GetKeyDown(KeyCode.Alpha6))
 			{
 				FreeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.BrittleHollow).gameObject.transform;
 			}
 
-			if (Input.GetKeyDown(KeyCode.Keypad7))
+			if (Input.GetKeyDown(KeyCode.Keypad7) || Input.GetKeyDown(KeyCode.Alpha7))
 			{
 				FreeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.GiantsDeep).gameObject.transform;
 			}
 
-			if (Input.GetKeyDown(KeyCode.Keypad8))
+			if (Input.GetKeyDown(KeyCode.Keypad8) || Input.GetKeyDown(KeyCode.Alpha8))
 			{
 				FreeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.DarkBramble).gameObject.transform;
 			}
 
-			if (Input.GetKeyDown(KeyCode.Keypad9))
+			if (Input.GetKeyDown(KeyCode.Keypad9) || Input.GetKeyDown(KeyCode.Alpha9))
 			{
 				FreeCam.transform.position = Locator.GetPlayerTransform().position;
 			}
 
-			if (Input.GetKeyDown(KeyCode.KeypadPlus))
+			if (Input.GetKeyDown(KeyCode.KeypadPlus) || Input.GetKeyDown(KeyCode.Plus))
 			{
 				MoveSpeed = 7f;
 			}
 
-			if (Input.GetKeyDown(KeyCode.KeypadEnter))
+			if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
 			{
 				MoveSpeed = 1000f;
 			}
 
-			if (!Input.GetKeyDown(KeyCode.KeypadPeriod))
+			if (!Input.GetKeyDown(KeyCode.KeypadPeriod) && !Input.GetKeyDown(KeyCode.Period))
 			{
 				return;
 			}
