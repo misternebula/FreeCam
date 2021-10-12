@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace FreeCam
 {
@@ -27,13 +28,14 @@ namespace FreeCam
         {
 			if (OWInput.GetInputMode() == InputMode.None)
 			{
-				this._degreesY = OWInput.GetValue(InputLibrary.look, InputMode.All).y * 2f;
-				this._degreesX = OWInput.GetValue(InputLibrary.look, InputMode.All).x * 2f;
+				var look = InputLibrary.look.GetAxisValue(true);
+				this._degreesY = look.y * 2f;
+				this._degreesX = look.x * 2f;
 
 				MainClass._camera.transform.Rotate(Vector3.up, _degreesX);
 				MainClass._camera.transform.Rotate(Vector3.right, -_degreesY);
 
-				if (Input.GetKey(KeyCode.LeftShift))
+				if (Keyboard.current[Key.LeftShift].isPressed)
 				{
 					if (MainClass._moveSpeed == 7f)
 					{
@@ -58,32 +60,32 @@ namespace FreeCam
 					}
 				}
 
-				if (Input.GetKey(KeyCode.W))
+				if (Keyboard.current[Key.W].isPressed)
 				{
 					MainClass._freeCam.transform.position += MainClass._freeCam.transform.forward * 0.02f * MainClass._moveSpeed;
 				}
 
-				if (Input.GetKey(KeyCode.S))
+				if (Keyboard.current[Key.S].isPressed)
 				{
 					MainClass._freeCam.transform.position -= MainClass._freeCam.transform.forward * 0.02f * MainClass._moveSpeed;
 				}
 
-				if (Input.GetKey(KeyCode.A))
+				if (Keyboard.current[Key.A].isPressed)
 				{
 					MainClass._freeCam.transform.position -= MainClass._freeCam.transform.right * 0.02f * MainClass._moveSpeed;
 				}
 
-				if (Input.GetKey(KeyCode.D))
+				if (Keyboard.current[Key.D].isPressed)
 				{
 					MainClass._freeCam.transform.position += MainClass._freeCam.transform.right * 0.02f * MainClass._moveSpeed;
 				}
 
-				if (Input.GetKey(KeyCode.Q))
+				if (Keyboard.current[Key.Q].isPressed)
 				{
 					MainClass._freeCam.transform.Rotate(Vector3.forward, 1);
 				}
 
-				if (Input.GetKey(KeyCode.E))
+				if (Keyboard.current[Key.E].isPressed)
 				{
 					MainClass._freeCam.transform.Rotate(Vector3.forward, -1);
 				}

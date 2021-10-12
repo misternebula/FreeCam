@@ -2,6 +2,7 @@
 using OWML.Common;
 using OWML.ModHelper;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.PostProcessing;
 using UnityEngine.SceneManagement;
 
@@ -44,7 +45,6 @@ namespace FreeCam
 			_camera.depth = 0f;
 			_camera.enabled = false;
 
-
 			_freeCam.AddComponent<CustomLookAround>();
 			_OWCamera = _freeCam.AddComponent<OWCamera>();
 			_OWCamera.renderSkybox = true;
@@ -62,6 +62,7 @@ namespace FreeCam
 					SetupCamera();
 				}
 			}
+
 			base.ModHelper.Console.WriteLine(behaviour.name);
 		}
 
@@ -119,12 +120,12 @@ namespace FreeCam
 		{
 			if (inputEnabled)
 			{
-				if (Input.GetKeyDown(KeyCode.UpArrow))
+				if (Keyboard.current[Key.UpArrow].wasPressedThisFrame)
 				{
 					SetupCamera();
 				}
 
-				if (Input.GetKeyDown(KeyCode.LeftArrow))
+				if (Keyboard.current[Key.LeftArrow].wasPressedThisFrame)
 				{
 					if (Locator.GetPlayerSuit().IsWearingHelmet())
 					{
@@ -136,82 +137,101 @@ namespace FreeCam
 					}
 				}
 
-				if (Input.GetKeyDown(KeyCode.KeypadDivide))
+				if (Keyboard.current[Key.NumpadDivide].wasPressedThisFrame)
 				{
 					Time.timeScale = 0f;
 				}
 
-				if (Input.GetKeyDown(KeyCode.KeypadMultiply))
+				if (Keyboard.current[Key.NumpadMultiply].wasPressedThisFrame)
 				{
 					Time.timeScale = 0.5f;
 				}
 
-				if (Input.GetKeyDown(KeyCode.KeypadMinus))
+				if (Keyboard.current[Key.NumpadMinus].wasPressedThisFrame)
 				{
 					Time.timeScale = 1f;
 				}
 
-				if (Input.GetKeyDown(KeyCode.Keypad0))
+				if (Keyboard.current[Key.Numpad0].wasPressedThisFrame)
 				{
 					_freeCam.transform.parent = Locator.GetPlayerTransform();
-				}
-
-				if (Input.GetKeyDown(KeyCode.Keypad1))
-				{
-					_freeCam.transform.parent = Locator.GetSunTransform();
-				}
-
-				if (Input.GetKeyDown(KeyCode.Keypad2))
-				{
-					_freeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.Comet).gameObject.transform;
-				}
-
-				if (Input.GetKeyDown(KeyCode.Keypad3))
-				{
-					_freeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.CaveTwin).gameObject.transform;
-				}
-
-				if (Input.GetKeyDown(KeyCode.Keypad4))
-				{
-					_freeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.TowerTwin).gameObject.transform;
-				}
-
-				if (Input.GetKeyDown(KeyCode.Keypad5))
-				{
-					_freeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject.transform;
-				}
-
-				if (Input.GetKeyDown(KeyCode.Keypad6))
-				{
-					_freeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.BrittleHollow).gameObject.transform;
-				}
-
-				if (Input.GetKeyDown(KeyCode.Keypad7))
-				{
-					_freeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.GiantsDeep).gameObject.transform;
-				}
-
-				if (Input.GetKeyDown(KeyCode.Keypad8))
-				{
-					_freeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.DarkBramble).gameObject.transform;
-				}
-
-				if (Input.GetKeyDown(KeyCode.Keypad9))
-				{
 					_freeCam.transform.position = Locator.GetPlayerTransform().position;
 				}
 
-				if (Input.GetKeyDown(KeyCode.KeypadPlus))
+				if (Keyboard.current[Key.Numpad1].wasPressedThisFrame)
+				{
+					var go = Locator.GetAstroObject(AstroObject.Name.Sun).gameObject.transform;
+					_freeCam.transform.parent = go;
+					_freeCam.transform.position = go.position;
+				}
+
+				if (Keyboard.current[Key.Numpad2].wasPressedThisFrame)
+				{
+					var go = Locator.GetAstroObject(AstroObject.Name.Comet).gameObject.transform;
+					_freeCam.transform.parent = go;
+					_freeCam.transform.position = go.position;
+				}
+
+				if (Keyboard.current[Key.Numpad3].wasPressedThisFrame)
+				{
+					var go = Locator.GetAstroObject(AstroObject.Name.CaveTwin).gameObject.transform;
+					_freeCam.transform.parent = go;
+					_freeCam.transform.position = go.position;
+				}
+
+				if (Keyboard.current[Key.Numpad4].wasPressedThisFrame)
+				{
+					var go = Locator.GetAstroObject(AstroObject.Name.TowerTwin).gameObject.transform;
+					_freeCam.transform.parent = go;
+					_freeCam.transform.position = go.position;
+				}
+
+				if (Keyboard.current[Key.Numpad5].wasPressedThisFrame)
+				{
+					var go = Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject.transform;
+					_freeCam.transform.parent = go;
+					_freeCam.transform.position = go.position;
+				}
+
+				if (Keyboard.current[Key.Numpad6].wasPressedThisFrame)
+				{
+					var go = Locator.GetAstroObject(AstroObject.Name.BrittleHollow).gameObject.transform;
+					_freeCam.transform.parent = go;
+					_freeCam.transform.position = go.position;
+				}
+
+				if (Keyboard.current[Key.Numpad7].wasPressedThisFrame)
+				{
+					var go = Locator.GetAstroObject(AstroObject.Name.GiantsDeep).gameObject.transform;
+					_freeCam.transform.parent = go;
+					_freeCam.transform.position = go.position;
+				}
+
+				if (Keyboard.current[Key.Numpad8].wasPressedThisFrame)
+				{
+					var go = Locator.GetAstroObject(AstroObject.Name.DarkBramble).gameObject.transform;
+					_freeCam.transform.parent = go;
+					_freeCam.transform.position = go.position;
+				}
+
+				if (Keyboard.current[Key.Numpad9].wasPressedThisFrame)
+				{
+					var go = Locator.GetAstroObject(AstroObject.Name.RingWorld).gameObject.transform;
+					_freeCam.transform.parent = go;
+					_freeCam.transform.position = go.position;
+				}
+
+				if (Keyboard.current[Key.NumpadPlus].wasPressedThisFrame)
 				{
 					_moveSpeed = 7f;
 				}
 
-				if (Input.GetKeyDown(KeyCode.KeypadEnter))
+				if (Keyboard.current[Key.NumpadEnter].wasPressedThisFrame)
 				{
 					_moveSpeed = 1000f;
 				}
 
-				if (Input.GetKeyDown(KeyCode.KeypadPeriod))
+				if (Keyboard.current[Key.NumpadPeriod].wasPressedThisFrame)
 				{
 					if (mode)
 					{
@@ -220,6 +240,7 @@ namespace FreeCam
 						{
 							_storedMode = InputMode.Character;
 						}
+
 						OWInput.ChangeInputMode(_storedMode);
 						GlobalMessenger<OWCamera>.FireEvent("SwitchActiveCamera", Locator.GetPlayerCamera());
 						_camera.enabled = false;

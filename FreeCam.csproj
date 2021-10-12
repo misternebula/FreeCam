@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FreeCam</RootNamespace>
     <AssemblyName>FreeCam</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,41 +33,49 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>E:\Epic\Epic Games\OuterWilds\OuterWilds_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\EpicGames\OuterWilds\OuterWilds_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio-Unity, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\OWML.0.5.0\lib\net35\NAudio-Unity.dll</HintPath>
+    <Reference Include="netstandard">
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\netstandard.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Json.Net.Unity3D.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="OWML.Abstractions">
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="OWML, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\OWML.0.5.0\lib\net35\OWML.dll</HintPath>
+    <Reference Include="OWML.Common">
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.Common.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\OWML.0.5.0\lib\net35\OWML.Common.dll</HintPath>
+    <Reference Include="OWML.Logging">
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.ModHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\OWML.0.5.0\lib\net35\OWML.ModHelper.dll</HintPath>
+    <Reference Include="OWML.ModHelper">
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.ModHelper.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.ModHelper.Assets, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\OWML.0.5.0\lib\net35\OWML.ModHelper.Assets.dll</HintPath>
+    <Reference Include="OWML.ModHelper.Assets">
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.ModHelper.Assets.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.ModHelper.Events, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\OWML.0.5.0\lib\net35\OWML.ModHelper.Events.dll</HintPath>
+    <Reference Include="OWML.ModHelper.Events">
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.ModHelper.Events.dll</HintPath>
     </Reference>
     <Reference Include="OWML.ModHelper.Input, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\OWML.0.5.0\lib\net35\OWML.ModHelper.Input.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.ModHelper.Input.dll</HintPath>
     </Reference>
     <Reference Include="OWML.ModHelper.Interaction, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\OWML.0.5.0\lib\net35\OWML.ModHelper.Interaction.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.ModHelper.Interaction.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.ModHelper.Menus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\OWML.0.5.0\lib\net35\OWML.ModHelper.Menus.dll</HintPath>
+    <Reference Include="OWML.ModHelper.Menus">
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.ModHelper.Menus.dll</HintPath>
+    </Reference>
+    <Reference Include="OWML.ModLoader">
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.ModLoader.dll</HintPath>
+    </Reference>
+    <Reference Include="OWML.Utils">
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.Utils.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -74,17 +83,17 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.InputSystem">
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\Unity.InputSystem.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>E:\Epic\Epic Games\OuterWilds\OuterWilds_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>E:\Epic\Epic Games\OuterWilds\OuterWilds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>E:\Epic\Epic Games\OuterWilds\OuterWilds_Data\Managed\UnityEngine.Networking.dll</HintPath>
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>E:\Epic\Epic Games\OuterWilds\OuterWilds_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -93,7 +102,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="default-config.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>md "$(OwmlDir)\Mods\$(ProjectName)"
+del "$(OwmlDir)\Mods\$(ProjectName)\config.json"
+
+copy /y "$(ProjectDir)\default-config.json" "$(OwmlDir)\Mods\$(ProjectName)"
+copy /y "$(ProjectDir)\manifest.json" "$(OwmlDir)\Mods\$(ProjectName)"
+
+copy /y "$(TargetPath)" "$(OwmlDir)\Mods\$(ProjectName)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

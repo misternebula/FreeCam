@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "settings": {
+    "disableLauncher": false,
+    "fov": 90
+  }
+}
