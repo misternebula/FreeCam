@@ -12,24 +12,21 @@ namespace FreeCam
 	{
 		public static GameObject _freeCam;
 		public static Camera _camera;
-		OWCamera _OWCamera;
-		public static float _moveSpeed = 7f;
-		InputMode _storedMode;
-
+		public static float _moveSpeed = 0.1f;
 		public static bool inputEnabled = false;
-
+		OWCamera _OWCamera;
+		InputMode _storedMode;
 		bool mode = false;
-
 		public bool _disableLauncher;
 		public int _fov;
 
 		public void Start()
 		{
-			SceneManager.sceneLoaded += this.OnSceneLoaded;
+			SceneManager.sceneLoaded += OnSceneLoaded;
 
 			base.ModHelper.Events.Subscribe<Flashlight>(Events.AfterStart);
 			IModEvents events = base.ModHelper.Events;
-			events.OnEvent = (Action<MonoBehaviour, Events>)Delegate.Combine(events.OnEvent, new Action<MonoBehaviour, Events>(this.OnEvent));
+			events.OnEvent = (Action<MonoBehaviour, Events>)Delegate.Combine(events.OnEvent, new Action<MonoBehaviour, Events>(OnEvent));
 		}
 
 		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -68,8 +65,8 @@ namespace FreeCam
 
 		public override void Configure(IModConfig config)
 		{
-			this._disableLauncher = config.GetSettingsValue<bool>("disableLauncher");
-			this._fov = config.GetSettingsValue<int>("fov");
+			_disableLauncher = config.GetSettingsValue<bool>("disableLauncher");
+			_fov = config.GetSettingsValue<int>("fov");
 		}
 
 		private void SetupCamera()
@@ -125,6 +122,11 @@ namespace FreeCam
 					SetupCamera();
 				}
 
+				if (Keyboard.current[Key.DownArrow].wasPressedThisFrame)
+				{
+					_moveSpeed = 0.1f;
+				}
+
 				if (Keyboard.current[Key.LeftArrow].wasPressedThisFrame)
 				{
 					if (Locator.GetPlayerSuit().IsWearingHelmet())
@@ -137,101 +139,98 @@ namespace FreeCam
 					}
 				}
 
-				if (Keyboard.current[Key.NumpadDivide].wasPressedThisFrame)
+				if (Keyboard.current[Key.NumpadDivide].wasPressedThisFrame || Keyboard.current[Key.Comma].wasPressedThisFrame)
 				{
 					Time.timeScale = 0f;
 				}
 
-				if (Keyboard.current[Key.NumpadMultiply].wasPressedThisFrame)
+				if (Keyboard.current[Key.NumpadMultiply].wasPressedThisFrame || Keyboard.current[Key.Period].wasPressedThisFrame)
 				{
 					Time.timeScale = 0.5f;
 				}
 
-				if (Keyboard.current[Key.NumpadMinus].wasPressedThisFrame)
+				if (Keyboard.current[Key.NumpadMinus].wasPressedThisFrame || Keyboard.current[Key.Slash].wasPressedThisFrame)
 				{
 					Time.timeScale = 1f;
 				}
 
-				if (Keyboard.current[Key.Numpad0].wasPressedThisFrame)
+				if (Keyboard.current[Key.Numpad0].wasPressedThisFrame || Keyboard.current[Key.Digit0].wasPressedThisFrame)
 				{
 					_freeCam.transform.parent = Locator.GetPlayerTransform();
 					_freeCam.transform.position = Locator.GetPlayerTransform().position;
 				}
 
-				if (Keyboard.current[Key.Numpad1].wasPressedThisFrame)
+				if (Keyboard.current[Key.Numpad1].wasPressedThisFrame || Keyboard.current[Key.Digit1].wasPressedThisFrame)
 				{
 					var go = Locator.GetAstroObject(AstroObject.Name.Sun).gameObject.transform;
 					_freeCam.transform.parent = go;
 					_freeCam.transform.position = go.position;
 				}
 
-				if (Keyboard.current[Key.Numpad2].wasPressedThisFrame)
+				if (Keyboard.current[Key.Numpad2].wasPressedThisFrame || Keyboard.current[Key.Digit2].wasPressedThisFrame)
 				{
 					var go = Locator.GetAstroObject(AstroObject.Name.Comet).gameObject.transform;
 					_freeCam.transform.parent = go;
 					_freeCam.transform.position = go.position;
 				}
 
-				if (Keyboard.current[Key.Numpad3].wasPressedThisFrame)
+				if (Keyboard.current[Key.Numpad3].wasPressedThisFrame || Keyboard.current[Key.Digit3].wasPressedThisFrame)
 				{
 					var go = Locator.GetAstroObject(AstroObject.Name.CaveTwin).gameObject.transform;
 					_freeCam.transform.parent = go;
 					_freeCam.transform.position = go.position;
 				}
 
-				if (Keyboard.current[Key.Numpad4].wasPressedThisFrame)
+				if (Keyboard.current[Key.Numpad4].wasPressedThisFrame || Keyboard.current[Key.Digit4].wasPressedThisFrame)
 				{
 					var go = Locator.GetAstroObject(AstroObject.Name.TowerTwin).gameObject.transform;
 					_freeCam.transform.parent = go;
 					_freeCam.transform.position = go.position;
 				}
 
-				if (Keyboard.current[Key.Numpad5].wasPressedThisFrame)
+				if (Keyboard.current[Key.Numpad5].wasPressedThisFrame || Keyboard.current[Key.Digit5].wasPressedThisFrame)
 				{
 					var go = Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject.transform;
 					_freeCam.transform.parent = go;
 					_freeCam.transform.position = go.position;
 				}
 
-				if (Keyboard.current[Key.Numpad6].wasPressedThisFrame)
+				if (Keyboard.current[Key.Numpad6].wasPressedThisFrame || Keyboard.current[Key.Digit6].wasPressedThisFrame)
 				{
 					var go = Locator.GetAstroObject(AstroObject.Name.BrittleHollow).gameObject.transform;
 					_freeCam.transform.parent = go;
 					_freeCam.transform.position = go.position;
 				}
 
-				if (Keyboard.current[Key.Numpad7].wasPressedThisFrame)
+				if (Keyboard.current[Key.Numpad7].wasPressedThisFrame || Keyboard.current[Key.Digit7].wasPressedThisFrame)
 				{
 					var go = Locator.GetAstroObject(AstroObject.Name.GiantsDeep).gameObject.transform;
 					_freeCam.transform.parent = go;
 					_freeCam.transform.position = go.position;
 				}
 
-				if (Keyboard.current[Key.Numpad8].wasPressedThisFrame)
+				if (Keyboard.current[Key.Numpad8].wasPressedThisFrame || Keyboard.current[Key.Digit8].wasPressedThisFrame)
 				{
 					var go = Locator.GetAstroObject(AstroObject.Name.DarkBramble).gameObject.transform;
 					_freeCam.transform.parent = go;
 					_freeCam.transform.position = go.position;
 				}
 
-				if (Keyboard.current[Key.Numpad9].wasPressedThisFrame)
+				if (Keyboard.current[Key.Numpad9].wasPressedThisFrame || Keyboard.current[Key.Digit9].wasPressedThisFrame)
 				{
 					var go = Locator.GetAstroObject(AstroObject.Name.RingWorld).gameObject.transform;
 					_freeCam.transform.parent = go;
 					_freeCam.transform.position = go.position;
 				}
 
-				if (Keyboard.current[Key.NumpadPlus].wasPressedThisFrame)
+				var scrollInOut = Mouse.current.scroll.y.ReadValue();
+				_moveSpeed += scrollInOut * 0.05f;
+				if (_moveSpeed < 0)
 				{
-					_moveSpeed = 7f;
+					_moveSpeed = 0;
 				}
 
-				if (Keyboard.current[Key.NumpadEnter].wasPressedThisFrame)
-				{
-					_moveSpeed = 1000f;
-				}
-
-				if (Keyboard.current[Key.NumpadPeriod].wasPressedThisFrame)
+				if (Keyboard.current[Key.NumpadPeriod].wasPressedThisFrame || Keyboard.current[Key.Semicolon].wasPressedThisFrame)
 				{
 					if (mode)
 					{

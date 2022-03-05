@@ -7,88 +7,43 @@ using UnityEngine.InputSystem;
 
 namespace FreeCam
 {
-    class CustomLookAround : MonoBehaviour
+    public class CustomLookAround : MonoBehaviour
     {
+        private float _degreesX;
+		private float _degreesY;
+		private float _moveX;
+		private float _moveY;
 
-        protected float _degreesX;
+		void Start() => Cursor.lockState = CursorLockMode.Locked;
 
-        protected float _degreesY;
-
-		void Start()
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-
-		void Awake()
+		void Update()
 		{
-			Debug.LogWarning("Awake!");
-		}
-
-        void Update()
-        {
-			if (OWInput.GetInputMode() == InputMode.None)
+			if (OWInput.GetInputMode() != InputMode.None)
 			{
-				var look = InputLibrary.look.GetAxisValue(true);
-				this._degreesY = look.y * 2f;
-				this._degreesX = look.x * 2f;
+				return;
+			}
 
-				MainClass._camera.transform.Rotate(Vector3.up, _degreesX);
-				MainClass._camera.transform.Rotate(Vector3.right, -_degreesY);
+			var look = InputLibrary.look.GetAxisValue(true);
+			_degreesY = look.y * 2f;
+			_degreesX = look.x * 2f;
 
-				if (Keyboard.current[Key.LeftShift].isPressed)
-				{
-					if (MainClass._moveSpeed == 7f)
-					{
-						MainClass._moveSpeed = 14f;
-					}
+			var move = InputLibrary.moveXZ.GetAxisValue(false);
+			_moveX = move.x;
+			_moveY = move.y;
 
-					if (MainClass._moveSpeed == 1000f)
-					{
-						MainClass._moveSpeed = 2000;
-					}
-				}
-				else
-				{
-					if (MainClass._moveSpeed == 14f)
-					{
-						MainClass._moveSpeed = 7f;
-					}
+			MainClass._camera.transform.Rotate(Vector3.up, _degreesX);
+			MainClass._camera.transform.Rotate(Vector3.right, -_degreesY);
+			MainClass._freeCam.transform.position += _moveY * (MainClass._freeCam.transform.forward * 0.02f * MainClass._moveSpeed);
+			MainClass._freeCam.transform.position += _moveX * (MainClass._freeCam.transform.right * 0.02f * MainClass._moveSpeed);
 
-					if (MainClass._moveSpeed == 2000f)
-					{
-						MainClass._moveSpeed = 1000;
-					}
-				}
+			if (Keyboard.current[Key.Q].isPressed)
+			{
+				MainClass._freeCam.transform.Rotate(Vector3.forward, 0.25f);
+			}
 
-				if (Keyboard.current[Key.W].isPressed)
-				{
-					MainClass._freeCam.transform.position += MainClass._freeCam.transform.forward * 0.02f * MainClass._moveSpeed;
-				}
-
-				if (Keyboard.current[Key.S].isPressed)
-				{
-					MainClass._freeCam.transform.position -= MainClass._freeCam.transform.forward * 0.02f * MainClass._moveSpeed;
-				}
-
-				if (Keyboard.current[Key.A].isPressed)
-				{
-					MainClass._freeCam.transform.position -= MainClass._freeCam.transform.right * 0.02f * MainClass._moveSpeed;
-				}
-
-				if (Keyboard.current[Key.D].isPressed)
-				{
-					MainClass._freeCam.transform.position += MainClass._freeCam.transform.right * 0.02f * MainClass._moveSpeed;
-				}
-
-				if (Keyboard.current[Key.Q].isPressed)
-				{
-					MainClass._freeCam.transform.Rotate(Vector3.forward, 1);
-				}
-
-				if (Keyboard.current[Key.E].isPressed)
-				{
-					MainClass._freeCam.transform.Rotate(Vector3.forward, -1);
-				}
+			if (Keyboard.current[Key.E].isPressed)
+			{
+				MainClass._freeCam.transform.Rotate(Vector3.forward, -0.25f);
 			}
 		}
 	}

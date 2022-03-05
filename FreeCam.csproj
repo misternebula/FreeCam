@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FreeCam</RootNamespace>
     <AssemblyName>FreeCam</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,70 +31,348 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\Assembly-CSharp.dll</HintPath>
+    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.1.2.0.1\lib\net472\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\EpicGames\OuterWilds\OuterWilds_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="netstandard">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\netstandard.dll</HintPath>
+    <Reference Include="Autodesk.Fbx, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\Autodesk.Fbx.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.Abstractions">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.Abstractions.dll</HintPath>
+    <Reference Include="EOS-SDK, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\EOS-SDK.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.Common">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.Common.dll</HintPath>
+    <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\Mono.Security.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.Logging">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.Logging.dll</HintPath>
+    <Reference Include="NAudio-Unity, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OWML.2.3.2\lib\net48\NAudio-Unity.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.ModHelper">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.ModHelper.dll</HintPath>
+    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\netstandard.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.ModHelper.Assets">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.ModHelper.Assets.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.ModHelper.Events">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.ModHelper.Events.dll</HintPath>
+    <Reference Include="OWML.Common, Version=2.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OWML.2.3.2\lib\net48\OWML.Common.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.ModHelper.Input, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.ModHelper.Input.dll</HintPath>
+    <Reference Include="OWML.Logging, Version=2.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OWML.2.3.2\lib\net48\OWML.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.ModHelper.Interaction, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.ModHelper.Interaction.dll</HintPath>
+    <Reference Include="OWML.ModHelper, Version=2.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OWML.2.3.2\lib\net48\OWML.ModHelper.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.ModHelper.Menus">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.ModHelper.Menus.dll</HintPath>
+    <Reference Include="OWML.ModHelper.Assets, Version=2.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OWML.2.3.2\lib\net48\OWML.ModHelper.Assets.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.ModLoader">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.ModLoader.dll</HintPath>
+    <Reference Include="OWML.ModHelper.Events, Version=2.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OWML.2.3.2\lib\net48\OWML.ModHelper.Events.dll</HintPath>
     </Reference>
-    <Reference Include="OWML.Utils">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\OWML.Utils.dll</HintPath>
+    <Reference Include="OWML.ModHelper.Input, Version=2.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OWML.2.3.2\lib\net48\OWML.ModHelper.Input.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="OWML.ModHelper.Interaction, Version=2.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OWML.2.3.2\lib\net48\OWML.ModHelper.Interaction.dll</HintPath>
+    </Reference>
+    <Reference Include="OWML.ModHelper.Menus, Version=2.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OWML.2.3.2\lib\net48\OWML.ModHelper.Menus.dll</HintPath>
+    </Reference>
+    <Reference Include="OWML.Utils, Version=2.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OWML.2.3.2\lib\net48\OWML.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.StackTrace, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.Diagnostics.StackTrace.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="System.EnterpriseServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.EnterpriseServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Globalization.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.Globalization.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.IO.Compression.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization.Xml, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.Runtime.Serialization.Xml.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel.Internals, Version=0.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.ServiceModel.Internals.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.Transactions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.Xml.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Unity.InputSystem">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\Unity.InputSystem.dll</HintPath>
+    <Reference Include="System.Xml.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.Xml.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.dll</HintPath>
+    <Reference Include="System.Xml.XPath.XDocument, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\System.Xml.XPath.XDocument.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    <Reference Include="UniSense, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UniSense.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\Outer Wilds\OuterWilds_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    <Reference Include="Unity.Addressables, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\Unity.Addressables.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Formats.Fbx.Runtime, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\Unity.Formats.Fbx.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InputSystem, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\Unity.InputSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.MemoryProfiler, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\Unity.MemoryProfiler.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Recorder, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\Unity.Recorder.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\Unity.ResourceManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ScriptableBuildPipeline, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\Unity.ScriptableBuildPipeline.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Timeline, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\Unity.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AccessibilityModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.AccessibilityModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.AIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AndroidJNIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.AndroidJNIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ARModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.ARModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClothModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.ClothModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterInputModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.ClusterInputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterRendererModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.ClusterRendererModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CrashReportingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.CrashReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DirectorModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.DirectorModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DSPGraphModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.DSPGraphModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GameCenterModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.GameCenterModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GridModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.GridModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HotReloadModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.HotReloadModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.InputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.JSONSerializeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.LocalizationModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.LocalizationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PerformanceReportingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.PerformanceReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.Physics2DModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ProfilerModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.ProfilerModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ScreenCaptureModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.ScreenCaptureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.SharedInternalsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpatialTracking, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteMaskModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.SpriteMaskModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteShapeModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.SpriteShapeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.StreamingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.StreamingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SubstanceModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.SubstanceModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SubsystemsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.SubsystemsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.TerrainModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainPhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.TextCoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TilemapModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.TilemapModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TLSModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.TLSModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UmbraModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.UmbraModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UNETModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.UNETModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityConnectModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityTestProtocolModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.UnityTestProtocolModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VehiclesModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.VehiclesModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VFXModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.VFXModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VideoModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.VideoModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VRModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.VRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.WindModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.WindModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.XR.LegacyInputHelpers, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.XRModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\UnityEngine.XRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="XGamingRuntime, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\OuterWildsGameLibs.1.1.12.168\lib\XGamingRuntime.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -107,12 +386,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>md "$(OwmlDir)\Mods\$(ProjectName)"
-del "$(OwmlDir)\Mods\$(ProjectName)\config.json"
-
-copy /y "$(ProjectDir)\default-config.json" "$(OwmlDir)\Mods\$(ProjectName)"
-copy /y "$(ProjectDir)\manifest.json" "$(OwmlDir)\Mods\$(ProjectName)"
-
-copy /y "$(TargetPath)" "$(OwmlDir)\Mods\$(ProjectName)"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
