@@ -14,7 +14,7 @@ namespace FreeCam
 		public static Camera _camera;
 		public static float _moveSpeed = 0.1f;
 		public static bool inputEnabled = false;
-		OWCamera _OWCamera;
+		public static OWCamera _OWCamera;
 		InputMode _storedMode;
 		bool mode = false;
 		public bool _disableLauncher;
@@ -45,6 +45,8 @@ namespace FreeCam
 			_camera.enabled = false;
 
 			_freeCam.AddComponent<CustomLookAround>();
+			_freeCam.AddComponent<CustomFlashlight>();
+
 			_OWCamera = _freeCam.AddComponent<OWCamera>();
 			_OWCamera.renderSkybox = true;
 
