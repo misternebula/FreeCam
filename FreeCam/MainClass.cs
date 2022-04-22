@@ -72,14 +72,7 @@ namespace FreeCam
 			}
 			else
 			{
-				if (LoadManager.GetCurrentScene() == OWScene.SolarSystem)
-				{
-					_freeCam.transform.parent = Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject.transform;
-				}
-				else
-				{
-					_freeCam.transform.parent = Locator.GetPlayerTransform();
-				}
+				_freeCam.transform.parent = Locator.GetPlayerTransform();
 
 				_freeCam.transform.position = Locator.GetPlayerTransform().position;
 				_freeCam.SetActive(false);
