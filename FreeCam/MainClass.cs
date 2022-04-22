@@ -23,10 +23,12 @@ namespace FreeCam
 		public void Start()
 		{
 			SceneManager.sceneLoaded += OnSceneLoaded;
+		}
 
-			base.ModHelper.Events.Subscribe<Flashlight>(Events.AfterStart);
-			IModEvents events = base.ModHelper.Events;
-			events.OnEvent = (Action<MonoBehaviour, Events>)Delegate.Combine(events.OnEvent, new Action<MonoBehaviour, Events>(OnEvent));
+		public override void Configure(IModConfig config)
+		{
+			_disableLauncher = config.GetSettingsValue<bool>("disableLauncher");
+			_fov = config.GetSettingsValue<int>("fov");
 		}
 
 		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -47,26 +49,9 @@ namespace FreeCam
 			_OWCamera.renderSkybox = true;
 
 			_freeCam.SetActive(true);
-		}
 
-		private void OnEvent(MonoBehaviour behaviour, Events ev)
-		{
-			if (LoadManager.GetCurrentScene() == OWScene.SolarSystem)
-			{
-				bool flag = behaviour.GetType() == typeof(Flashlight) && ev == Events.AfterStart;
-				if (flag)
-				{
-					SetupCamera();
-				}
-			}
-
-			base.ModHelper.Console.WriteLine(behaviour.name);
-		}
-
-		public override void Configure(IModConfig config)
-		{
-			_disableLauncher = config.GetSettingsValue<bool>("disableLauncher");
-			_fov = config.GetSettingsValue<int>("fov");
+			// Finish initialization next tick
+			ModHelper.Events.Unity.FireOnNextUpdate(SetupCamera);
 		}
 
 		private void SetupCamera()
