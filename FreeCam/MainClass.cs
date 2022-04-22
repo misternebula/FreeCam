@@ -12,33 +12,55 @@ namespace FreeCam
 	{
 		public static GameObject _freeCam;
 		public static Camera _camera;
+		public static OWCamera _OWCamera;
+
 		public static float _moveSpeed = 0.1f;
 		public static bool inputEnabled = false;
-		public static OWCamera _OWCamera;
+
 		InputMode _storedMode;
 		bool mode = false;
 		public bool _disableLauncher;
 		public int _fov;
+
+		private GameObject _probeLauncher;
+		private GameObject _probeLauncher2;
 
 		public void Start()
 		{
 			SceneManager.sceneLoaded += OnSceneLoaded;
 		}
 
+		void OnDestroy()
+        {
+			SceneManager.sceneLoaded -= OnSceneLoaded;
+		}
+
 		public override void Configure(IModConfig config)
 		{
 			_disableLauncher = config.GetSettingsValue<bool>("disableLauncher");
 			_fov = config.GetSettingsValue<int>("fov");
+
+			// If the mod is currently active we can set these immediately
+			if(_camera != null)
+            {
+				_camera.fieldOfView = _fov;
+				_OWCamera.fieldOfView = _fov;
+				SetLauncher(!_disableLauncher);
+			}
 		}
 
-		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+		private void OnSceneLoaded(Scene scene, LoadSceneMode _)
 		{
+			if (scene.name != "SolarSystem" && scene.name != "EyeOfTheUniverse") return;
+
+			base.ModHelper.Console.WriteLine("[FreeCam] : Creating GameObject");
+
 			_freeCam = new GameObject();
 			_freeCam.SetActive(false);
 			_camera = _freeCam.AddComponent<Camera>();
 			_camera.clearFlags = CameraClearFlags.Color;
 			_camera.backgroundColor = Color.black;
-			_camera.fieldOfView = 90f;
+			_camera.fieldOfView = _fov;
 			_camera.nearClipPlane = 0.1f;
 			_camera.farClipPlane = 40000f;
 			_camera.depth = 0f;
@@ -52,19 +74,13 @@ namespace FreeCam
 
 			_freeCam.SetActive(true);
 
-			// Finish initialization next tick
-			ModHelper.Events.Unity.FireOnNextUpdate(SetupCamera);
+			// Finish initialization next tick (only in solar system for some reason)
+			if(scene.name == "SolarSystem") ModHelper.Events.Unity.FireOnNextUpdate(SetupCamera);
 		}
 
 		private void SetupCamera()
 		{
-			if (_disableLauncher)
-			{
-				GameObject.Find("ProbeLauncher").SetActive(false);
-				base.ModHelper.Console.WriteLine("[FreeCam] : Launcher off!");
-				GameObject.Find("ProbeLauncher").SetActive(false);
-				base.ModHelper.Console.WriteLine("[FreeCam] : Visor off!");
-			}
+			if (_disableLauncher) SetLauncher(false);
 
 			if (_freeCam.name == "FREECAM")
 			{
@@ -91,6 +107,19 @@ namespace FreeCam
 
 				_freeCam.name = "FREECAM";
 			}
+		}
+
+		void SetLauncher(bool enable)
+        {
+			// Fine to search for it when this is first called bc by default it will be active
+			if (_probeLauncher == null) _probeLauncher = GameObject.Find("ProbeLauncher");
+			_probeLauncher.SetActive(enable);
+
+			// I don't know why it does it this way but I accept it
+			if (_probeLauncher2 == null) _probeLauncher2 = GameObject.Find("ProbeLauncher");
+			_probeLauncher2.SetActive(enable);
+
+			base.ModHelper.Console.WriteLine($"[FreeCam] : Launcher {(enable ? "on" : "off")}!");
 		}
 
 		void Update()
