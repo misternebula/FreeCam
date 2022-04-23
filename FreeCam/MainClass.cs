@@ -23,7 +23,6 @@ namespace FreeCam
 		public int _fov;
 
 		private GameObject _probeLauncher;
-		private GameObject _probeLauncher2;
 
 		public void Start()
 		{
@@ -45,79 +44,100 @@ namespace FreeCam
             {
 				_camera.fieldOfView = _fov;
 				_OWCamera.fieldOfView = _fov;
-				SetLauncher(!_disableLauncher);
+
+				// Only update launcher if we are currently using the freecam
+				if(Locator.GetActiveCamera() == _OWCamera) SetLauncher(!_disableLauncher);
 			}
 		}
 
 		private void OnSceneLoaded(Scene scene, LoadSceneMode _)
 		{
+			base.ModHelper.Console.WriteLine($"[FreeCam] : Loading scene {scene.name}");
+
 			if (scene.name != "SolarSystem" && scene.name != "EyeOfTheUniverse") return;
 
-			base.ModHelper.Console.WriteLine("[FreeCam] : Creating GameObject");
+			PreInit();
 
-			_freeCam = new GameObject();
-			_freeCam.SetActive(false);
-			_camera = _freeCam.AddComponent<Camera>();
-			_camera.clearFlags = CameraClearFlags.Color;
-			_camera.backgroundColor = Color.black;
-			_camera.fieldOfView = _fov;
-			_camera.nearClipPlane = 0.1f;
-			_camera.farClipPlane = 40000f;
-			_camera.depth = 0f;
-			_camera.enabled = false;
-
-			_freeCam.AddComponent<CustomLookAround>();
-			_freeCam.AddComponent<CustomFlashlight>();
-
-			_OWCamera = _freeCam.AddComponent<OWCamera>();
-			_OWCamera.renderSkybox = true;
-
-			_freeCam.SetActive(true);
-
-			// Finish initialization next tick (only in solar system for some reason)
-			if(scene.name == "SolarSystem") ModHelper.Events.Unity.FireOnNextUpdate(SetupCamera);
+			// Finish initialization next tick 
+			if(scene.name == "SolarSystem") ModHelper.Events.Unity.FireOnNextUpdate(Init);
 		}
 
-		private void SetupCamera()
-		{
-			if (_disableLauncher) SetLauncher(false);
+		private void PreInit()
+        {
+			base.ModHelper.Console.WriteLine("[FreeCam] : Pre-Initializing");
 
-			if (_freeCam.name == "FREECAM")
+			try
 			{
-				base.ModHelper.Console.WriteLine("[FreeCam] : Already set up! Aborting...");
-			}
-			else
-			{
-				_freeCam.transform.parent = Locator.GetPlayerTransform();
-
-				_freeCam.transform.position = Locator.GetPlayerTransform().position;
+				_freeCam = new GameObject();
 				_freeCam.SetActive(false);
+				_camera = _freeCam.AddComponent<Camera>();
+				_camera.clearFlags = CameraClearFlags.Color;
+				_camera.backgroundColor = Color.black;
+				_camera.fieldOfView = _fov;
+				_camera.nearClipPlane = 0.1f;
+				_camera.farClipPlane = 40000f;
+				_camera.depth = 0f;
+				_camera.enabled = false;
 
-				FlashbackScreenGrabImageEffect temp = _freeCam.AddComponent<FlashbackScreenGrabImageEffect>();
-				temp._downsampleShader = Locator.GetPlayerCamera().gameObject.GetComponent<FlashbackScreenGrabImageEffect>()._downsampleShader;
+				_freeCam.AddComponent<CustomLookAround>();
+				_freeCam.AddComponent<CustomFlashlight>();
 
-				PlanetaryFogImageEffect _image = _freeCam.AddComponent<PlanetaryFogImageEffect>();
-				_image.fogShader = Locator.GetPlayerCamera().gameObject.GetComponent<PlanetaryFogImageEffect>().fogShader;
-
-                PostProcessingBehaviour _postProcessiong = _freeCam.AddComponent<PostProcessingBehaviour>();
-                _postProcessiong.profile = Locator.GetPlayerCamera().gameObject.GetAddComponent<PostProcessingBehaviour>().profile;
+				_OWCamera = _freeCam.AddComponent<OWCamera>();
+				_OWCamera.renderSkybox = true;
 
 				_freeCam.SetActive(true);
-				_camera.cullingMask = Locator.GetPlayerCamera().mainCamera.cullingMask & ~(1 << 27) | (1 << 22);
+			}
+			catch (Exception ex)
+			{
+				base.ModHelper.Console.WriteLine($"[FreeCam] : Failed pre-initialization: {ex.Message}, {ex.StackTrace}");
+			}
+		}
 
-				_freeCam.name = "FREECAM";
+		private void Init()
+		{
+			base.ModHelper.Console.WriteLine("[FreeCam] : Initializing");
+
+            try
+            {
+				if (_disableLauncher) SetLauncher(false);
+
+				if (_freeCam.name == "FREECAM")
+				{
+					base.ModHelper.Console.WriteLine("[FreeCam] : Already set up! Aborting...");
+				}
+				else
+				{
+					_freeCam.transform.parent = Locator.GetPlayerTransform();
+
+					_freeCam.transform.position = Locator.GetPlayerTransform().position;
+					_freeCam.SetActive(false);
+
+					FlashbackScreenGrabImageEffect temp = _freeCam.AddComponent<FlashbackScreenGrabImageEffect>();
+					temp._downsampleShader = Locator.GetPlayerCamera().gameObject.GetComponent<FlashbackScreenGrabImageEffect>()._downsampleShader;
+
+					PlanetaryFogImageEffect _image = _freeCam.AddComponent<PlanetaryFogImageEffect>();
+					_image.fogShader = Locator.GetPlayerCamera().gameObject.GetComponent<PlanetaryFogImageEffect>().fogShader;
+
+					PostProcessingBehaviour _postProcessiong = _freeCam.AddComponent<PostProcessingBehaviour>();
+					_postProcessiong.profile = Locator.GetPlayerCamera().gameObject.GetAddComponent<PostProcessingBehaviour>().profile;
+
+					_freeCam.SetActive(true);
+					_camera.cullingMask = Locator.GetPlayerCamera().mainCamera.cullingMask & ~(1 << 27) | (1 << 22);
+
+					_freeCam.name = "FREECAM";
+				}
+			}
+			catch (Exception ex)
+			{
+				base.ModHelper.Console.WriteLine($"[FreeCam] : Failed initialization: {ex.Message}, {ex.StackTrace}");
 			}
 		}
 
 		void SetLauncher(bool enable)
         {
 			// Fine to search for it when this is first called bc by default it will be active
-			if (_probeLauncher == null) _probeLauncher = GameObject.Find("ProbeLauncher");
+			if (_probeLauncher == null) _probeLauncher = GameObject.Find("Player_Body/PlayerCamera/ProbeLauncher");
 			_probeLauncher.SetActive(enable);
-
-			// I don't know why it does it this way but I accept it
-			if (_probeLauncher2 == null) _probeLauncher2 = GameObject.Find("ProbeLauncher");
-			_probeLauncher2.SetActive(enable);
 
 			base.ModHelper.Console.WriteLine($"[FreeCam] : Launcher {(enable ? "on" : "off")}!");
 		}
@@ -128,7 +148,7 @@ namespace FreeCam
 			{
 				if (Keyboard.current[Key.UpArrow].wasPressedThisFrame)
 				{
-					SetupCamera();
+					Init();
 				}
 
 				if (Keyboard.current[Key.DownArrow].wasPressedThisFrame)
@@ -253,6 +273,9 @@ namespace FreeCam
 						GlobalMessenger<OWCamera>.FireEvent("SwitchActiveCamera", Locator.GetPlayerCamera());
 						_camera.enabled = false;
 						Locator.GetActiveCamera().mainCamera.enabled = true;
+
+						// Turn the launcher back on
+						SetLauncher(true);
 					}
 					else
 					{
@@ -262,6 +285,8 @@ namespace FreeCam
 						GlobalMessenger<OWCamera>.FireEvent("SwitchActiveCamera", _OWCamera);
 						Locator.GetActiveCamera().mainCamera.enabled = false;
 						_camera.enabled = true;
+
+						SetLauncher(!_disableLauncher);
 					}
 				}
 			}
