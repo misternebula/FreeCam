@@ -36,7 +36,7 @@ namespace FreeCam
 
         private void OnSwitchActiveCamera(OWCamera camera)
         {
-            if(camera != MainClass._OWCamera)
+            if (camera != MainClass._OWCamera)
             {
                 _light.enabled = false;
             }
@@ -46,13 +46,13 @@ namespace FreeCam
         {
             if (!MainClass.inputEnabled) return;
 
-            if(OWInput.IsNewlyPressed(InputLibrary.flashlight))
+            if (OWInput.IsNewlyPressed(InputLibrary.flashlight))
             {
                 _light.enabled = !_light.enabled;
             }
-            
+
             // Adjust range of the light
-            if(Keyboard.current[Key.LeftBracket].IsPressed())
+            if (Keyboard.current[Key.LeftBracket].IsPressed())
             {
                 var rate = Keyboard.current[Key.LeftShift].IsPressed() ? _fastRangeAdjust : _slowRangeAdjust;
 
