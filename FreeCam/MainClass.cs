@@ -24,6 +24,8 @@ namespace FreeCam
 
         private GameObject _probeLauncher;
 
+        private bool _isInitialized;
+
         public void Start()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -57,9 +59,6 @@ namespace FreeCam
             if (scene.name != "SolarSystem" && scene.name != "EyeOfTheUniverse") return;
 
             PreInit();
-
-            // Finish initialization next tick 
-            if (scene.name == "SolarSystem") ModHelper.Events.Unity.FireOnNextUpdate(Init);
         }
 
         private void PreInit()
@@ -86,6 +85,8 @@ namespace FreeCam
                 _OWCamera.renderSkybox = true;
 
                 _freeCam.SetActive(true);
+
+                _isInitialized = false;
             }
             catch (Exception ex)
             {
@@ -101,7 +102,7 @@ namespace FreeCam
             {
                 if (_disableLauncher) SetLauncher(false);
 
-                if (_freeCam.name == "FREECAM")
+                if (_isInitialized)
                 {
                     base.ModHelper.Console.WriteLine("[FreeCam] : Already set up! Aborting...");
                 }
@@ -125,6 +126,8 @@ namespace FreeCam
                     _camera.cullingMask = Locator.GetPlayerCamera().mainCamera.cullingMask & ~(1 << 27) | (1 << 22);
 
                     _freeCam.name = "FREECAM";
+
+                    _isInitialized = true;
                 }
             }
             catch (Exception ex)
@@ -263,6 +266,8 @@ namespace FreeCam
                 {
                     if (mode)
                     {
+                        // Switch back to regular camera
+
                         mode = false;
                         if (_storedMode == InputMode.None)
                         {
@@ -279,6 +284,10 @@ namespace FreeCam
                     }
                     else
                     {
+                        // Switch to freecam
+
+                        if (!_isInitialized) Init();
+
                         mode = true;
                         _storedMode = OWInput.GetInputMode();
                         OWInput.ChangeInputMode(InputMode.None);
