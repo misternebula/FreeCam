@@ -14,7 +14,7 @@ namespace FreeCam
 
         private static float _range = 1000f;
 
-        private static readonly float _minRange = 1f;
+        private static readonly float _minRange = 5f;
         private static readonly float _maxRange = 5000f;
         private static readonly float _slowRangeAdjust = 250f;
         private static readonly float _fastRangeAdjust = 2500f;
@@ -44,7 +44,7 @@ namespace FreeCam
 
         void Update()
         {
-            if (!MainClass.inputEnabled) return;
+            if (!MainClass.inputEnabled || Locator.GetActiveCamera() != MainClass._OWCamera) return;
 
             if (OWInput.IsNewlyPressed(InputLibrary.flashlight))
             {
