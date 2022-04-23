@@ -1,9 +1,0 @@
-{
-  "filename": "FreeCam.dll",
-  "author": "misternebula",
-  "name": "FreeCam",
-  "uniqueName": "misternebula.FreeCam",
-  "version": "2.3.0",
-  "owmlVersion": "2.3.2",
-  "dependencies" : [ "misternebula.MN-InputHandler" ]
-}
