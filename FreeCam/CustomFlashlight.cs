@@ -14,9 +14,9 @@ namespace FreeCam
 
         private static float _range = 1000f;
 
-        private static readonly float _minRange = 0f;
+        private static readonly float _minRange = 1f;
         private static readonly float _maxRange = 5000f;
-        private static readonly float _slowRangeAdjust = 500f;
+        private static readonly float _slowRangeAdjust = 250f;
         private static readonly float _fastRangeAdjust = 2500f;
 
         void Start()
