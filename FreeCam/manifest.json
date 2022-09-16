@@ -1,9 +1,10 @@
 {
+  "$schema": "https://raw.githubusercontent.com/amazingalek/owml/master/schemas/manifest_schema.json",
   "filename": "FreeCam.dll",
   "author": "misternebula",
   "name": "FreeCam",
   "uniqueName": "misternebula.FreeCam",
-  "version": "2.4.0",
-  "owmlVersion": "2.3.2",
-  "dependencies" : [ "misternebula.MN-InputHandler" ]
+  "version": "2.5.0",
+  "owmlVersion": "2.6.0",
+  "dependencies": [ "xen.CommonCameraUtility" ]
 }
