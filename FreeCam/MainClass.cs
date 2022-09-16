@@ -216,7 +216,7 @@ namespace FreeCam
             }
         }
 
-        public static void Write(string msg) => _instance.ModHelper.Console.WriteLine($"[Freecam] : {msg}", MessageType.Info);
-        public static void WriteError(string msg) => _instance.ModHelper.Console.WriteLine($"[Freecam] : {msg}", MessageType.Error);
+        public static void Write(string msg) => _instance.ModHelper.Console.WriteLine($"[FreeCam] : {msg}", MessageType.Info);
+        public static void WriteError(string msg) => _instance.ModHelper.Console.WriteLine($"[FreeCam] : {msg}", MessageType.Error);
 	}
 }
