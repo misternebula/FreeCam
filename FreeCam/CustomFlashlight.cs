@@ -44,7 +44,7 @@ namespace FreeCam
 
         void Update()
         {
-            if (!MainClass.inputEnabled || Locator.GetActiveCamera() != MainClass._OWCamera) return;
+            if (Locator.GetActiveCamera() != MainClass._OWCamera) return;
 
             if (OWInput.IsNewlyPressed(InputLibrary.flashlight))
             {
