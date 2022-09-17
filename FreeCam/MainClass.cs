@@ -1,6 +1,8 @@
-﻿using OWML.Common;
+﻿using HarmonyLib;
+using OWML.Common;
 using OWML.ModHelper;
 using System;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -16,7 +18,7 @@ namespace FreeCam
         public static float _moveSpeed = 0.1f;
 
         InputMode _storedMode;
-        bool mode = false;
+        bool _inFreeCam = false;
         public int _fov;
 
 		private ICommonCameraAPI _commonCameraAPI;
@@ -25,7 +27,9 @@ namespace FreeCam
 
         public void Start()
         {
-            _instance = this;
+			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
+
+			_instance = this;
 
 			try
 			{
@@ -44,12 +48,16 @@ namespace FreeCam
 				}
 			}
 
+			GlobalMessenger<OWCamera>.AddListener("SwitchActiveCamera", OnSwitchActiveCamera);
+
 			SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         void OnDestroy()
         {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
+			GlobalMessenger<OWCamera>.RemoveListener("SwitchActiveCamera", OnSwitchActiveCamera);
+
+			SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
         public override void Configure(IModConfig config)
@@ -69,6 +77,8 @@ namespace FreeCam
 			Write($"Loading scene {scene.name}");
 
             if (scene.name != "SolarSystem" && scene.name != "EyeOfTheUniverse") return;
+
+            _inFreeCam = false;
 
 			(_OWCamera, _camera) = _commonCameraAPI.CreateCustomCamera("FREECAM", (OWCamera cam) =>
 			{
@@ -194,32 +204,37 @@ namespace FreeCam
 
             if (Keyboard.current[Key.NumpadPeriod].wasPressedThisFrame || Keyboard.current[Key.Semicolon].wasPressedThisFrame)
             {
-                if (mode)
+                if (_inFreeCam)
                 {
-                    // Switch back to regular camera
-                    mode = false;
-                    if (_storedMode == InputMode.None)
-                    {
-                        _storedMode = InputMode.Character;
-                    }
-
-                    OWInput.ChangeInputMode(_storedMode);
-
                     _commonCameraAPI.ExitCamera(_OWCamera);
                 }
                 else
                 {
-                    // Switch to freecam
-                    mode = true;
-                    _storedMode = OWInput.GetInputMode();
-                    OWInput.ChangeInputMode(InputMode.None);
-
 					_commonCameraAPI.EnterCamera(_OWCamera);
 				}
             }
         }
 
-        public static void Write(string msg) => _instance.ModHelper.Console.WriteLine($"[FreeCam] : {msg}", MessageType.Info);
+		private void OnSwitchActiveCamera(OWCamera camera)
+        {
+            if (_inFreeCam && camera != _OWCamera)
+            {
+				_inFreeCam = false;
+				if (_storedMode == InputMode.None)
+				{
+					_storedMode = InputMode.Character;
+				}
+				OWInput.ChangeInputMode(_storedMode);
+			}
+            else if (!_inFreeCam && camera == _OWCamera)
+            {
+				_inFreeCam = true;
+				_storedMode = OWInput.GetInputMode();
+				OWInput.ChangeInputMode(InputMode.None);
+			}
+        }
+
+		public static void Write(string msg) => _instance.ModHelper.Console.WriteLine($"[FreeCam] : {msg}", MessageType.Info);
         public static void WriteError(string msg) => _instance.ModHelper.Console.WriteLine($"[FreeCam] : {msg}", MessageType.Error);
 	}
 }
