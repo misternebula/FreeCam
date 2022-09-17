@@ -66,11 +66,16 @@ namespace FreeCam
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode _)
         {
-            Write($"Loading scene {scene.name}");
+			Write($"Loading scene {scene.name}");
 
             if (scene.name != "SolarSystem" && scene.name != "EyeOfTheUniverse") return;
 
-			(_OWCamera, _camera) = _commonCameraAPI.CreateCustomCamera("StaticCamera");
+			(_OWCamera, _camera) = _commonCameraAPI.CreateCustomCamera("FREECAM", (OWCamera cam) =>
+			{
+				cam.mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
+				cam.mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("HeadsUpDisplay"));
+				cam.mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("HelmetUVPass"));
+			});
 			_freeCam = _camera.gameObject;
 
 			_freeCam.AddComponent<CustomLookAround>();
@@ -199,9 +204,8 @@ namespace FreeCam
                     }
 
                     OWInput.ChangeInputMode(_storedMode);
-                    GlobalMessenger<OWCamera>.FireEvent("SwitchActiveCamera", Locator.GetPlayerCamera());
-                    _camera.enabled = false;
-                    Locator.GetActiveCamera().mainCamera.enabled = true;
+
+                    _commonCameraAPI.ExitCamera(_OWCamera);
                 }
                 else
                 {
@@ -209,10 +213,9 @@ namespace FreeCam
                     mode = true;
                     _storedMode = OWInput.GetInputMode();
                     OWInput.ChangeInputMode(InputMode.None);
-                    GlobalMessenger<OWCamera>.FireEvent("SwitchActiveCamera", _OWCamera);
-                    Locator.GetActiveCamera().mainCamera.enabled = false;
-                    _camera.enabled = true;
-                }
+
+					_commonCameraAPI.EnterCamera(_OWCamera);
+				}
             }
         }
 
