@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/amazingalek/owml/master/schemas/manifest_schema.json",
   "filename": "FreeCam.dll",
-  "author": "misternebula",
+  "author": "_nebula",
   "name": "FreeCam",
   "uniqueName": "misternebula.FreeCam",
   "version": "2.5.0",
