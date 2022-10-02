@@ -31,19 +31,19 @@ namespace FreeCam
             _moveX = move.x;
             _moveY = move.y;
 
-            MainClass._camera.transform.Rotate(Vector3.up, _degreesX);
-            MainClass._camera.transform.Rotate(Vector3.right, -_degreesY);
-            MainClass._freeCam.transform.position += _moveY * (MainClass._freeCam.transform.forward * 0.02f * MainClass._moveSpeed);
-            MainClass._freeCam.transform.position += _moveX * (MainClass._freeCam.transform.right * 0.02f * MainClass._moveSpeed);
+            MainClass.Camera.transform.Rotate(Vector3.up, _degreesX);
+            MainClass.Camera.transform.Rotate(Vector3.right, -_degreesY);
+            MainClass.FreeCam.transform.position += _moveY * (MainClass.FreeCam.transform.forward * 0.02f * MainClass._moveSpeed);
+            MainClass.FreeCam.transform.position += _moveX * (MainClass.FreeCam.transform.right * 0.02f * MainClass._moveSpeed);
 
             if (Keyboard.current[Key.Q].isPressed)
             {
-                MainClass._freeCam.transform.Rotate(Vector3.forward, 0.25f);
+                MainClass.FreeCam.transform.Rotate(Vector3.forward, 0.25f);
             }
 
             if (Keyboard.current[Key.E].isPressed)
             {
-                MainClass._freeCam.transform.Rotate(Vector3.forward, -0.25f);
+                MainClass.FreeCam.transform.Rotate(Vector3.forward, -0.25f);
             }
         }
     }

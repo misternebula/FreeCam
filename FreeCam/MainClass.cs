@@ -11,9 +11,9 @@ namespace FreeCam
 {
     class MainClass : ModBehaviour
     {
-        public static GameObject _freeCam;
-        public static Camera _camera;
-        public static OWCamera _OWCamera;
+        public static GameObject FreeCam { get; private set; }
+        public static Camera Camera { get; private set; }
+        public static OWCamera OWCamera { get; private set; }
 
         public static float _moveSpeed = 0.1f;
 
@@ -24,6 +24,8 @@ namespace FreeCam
 		private ICommonCameraAPI _commonCameraAPI;
 
         private static MainClass _instance;
+
+
 
         public void Start()
         {
@@ -65,10 +67,10 @@ namespace FreeCam
             _fov = config.GetSettingsValue<int>("fov");
 
             // If the mod is currently active we can set these immediately
-            if (_camera != null)
+            if (Camera != null)
             {
-                _camera.fieldOfView = _fov;
-                _OWCamera.fieldOfView = _fov;
+                Camera.fieldOfView = _fov;
+                OWCamera.fieldOfView = _fov;
             }
         }
 
@@ -80,16 +82,16 @@ namespace FreeCam
 
             _inFreeCam = false;
 
-			(_OWCamera, _camera) = _commonCameraAPI.CreateCustomCamera("FREECAM", (OWCamera cam) =>
+			(OWCamera, Camera) = _commonCameraAPI.CreateCustomCamera("FREECAM", (OWCamera cam) =>
 			{
 				cam.mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
 				cam.mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("HeadsUpDisplay"));
 				cam.mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("HelmetUVPass"));
 			});
-			_freeCam = _camera.gameObject;
+			FreeCam = Camera.gameObject;
 
-			_freeCam.AddComponent<CustomLookAround>();
-			_freeCam.AddComponent<CustomFlashlight>();
+			FreeCam.AddComponent<CustomLookAround>();
+			FreeCam.AddComponent<CustomFlashlight>();
 		}
 
         void Update()
@@ -128,71 +130,71 @@ namespace FreeCam
 
             if (Keyboard.current[Key.Numpad0].wasPressedThisFrame || Keyboard.current[Key.Digit0].wasPressedThisFrame)
             {
-                _freeCam.transform.parent = Locator.GetPlayerTransform();
-                _freeCam.transform.position = Locator.GetPlayerTransform().position;
+                FreeCam.transform.parent = Locator.GetPlayerTransform();
+                FreeCam.transform.position = Locator.GetPlayerTransform().position;
             }
 
             if (Keyboard.current[Key.Numpad1].wasPressedThisFrame || Keyboard.current[Key.Digit1].wasPressedThisFrame)
             {
                 var go = Locator.GetAstroObject(AstroObject.Name.Sun).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
+                FreeCam.transform.parent = go;
+                FreeCam.transform.position = go.position;
             }
 
             if (Keyboard.current[Key.Numpad2].wasPressedThisFrame || Keyboard.current[Key.Digit2].wasPressedThisFrame)
             {
                 var go = Locator.GetAstroObject(AstroObject.Name.Comet).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
+                FreeCam.transform.parent = go;
+                FreeCam.transform.position = go.position;
             }
 
             if (Keyboard.current[Key.Numpad3].wasPressedThisFrame || Keyboard.current[Key.Digit3].wasPressedThisFrame)
             {
                 var go = Locator.GetAstroObject(AstroObject.Name.CaveTwin).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
+                FreeCam.transform.parent = go;
+                FreeCam.transform.position = go.position;
             }
 
             if (Keyboard.current[Key.Numpad4].wasPressedThisFrame || Keyboard.current[Key.Digit4].wasPressedThisFrame)
             {
                 var go = Locator.GetAstroObject(AstroObject.Name.TowerTwin).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
+                FreeCam.transform.parent = go;
+                FreeCam.transform.position = go.position;
             }
 
             if (Keyboard.current[Key.Numpad5].wasPressedThisFrame || Keyboard.current[Key.Digit5].wasPressedThisFrame)
             {
                 var go = Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
+                FreeCam.transform.parent = go;
+                FreeCam.transform.position = go.position;
             }
 
             if (Keyboard.current[Key.Numpad6].wasPressedThisFrame || Keyboard.current[Key.Digit6].wasPressedThisFrame)
             {
                 var go = Locator.GetAstroObject(AstroObject.Name.BrittleHollow).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
+                FreeCam.transform.parent = go;
+                FreeCam.transform.position = go.position;
             }
 
             if (Keyboard.current[Key.Numpad7].wasPressedThisFrame || Keyboard.current[Key.Digit7].wasPressedThisFrame)
             {
                 var go = Locator.GetAstroObject(AstroObject.Name.GiantsDeep).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
+                FreeCam.transform.parent = go;
+                FreeCam.transform.position = go.position;
             }
 
             if (Keyboard.current[Key.Numpad8].wasPressedThisFrame || Keyboard.current[Key.Digit8].wasPressedThisFrame)
             {
                 var go = Locator.GetAstroObject(AstroObject.Name.DarkBramble).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
+                FreeCam.transform.parent = go;
+                FreeCam.transform.position = go.position;
             }
 
             if (Keyboard.current[Key.Numpad9].wasPressedThisFrame || Keyboard.current[Key.Digit9].wasPressedThisFrame)
             {
                 var go = Locator.GetAstroObject(AstroObject.Name.RingWorld).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
+                FreeCam.transform.parent = go;
+                FreeCam.transform.position = go.position;
             }
 
             var scrollInOut = Mouse.current.scroll.y.ReadValue();
@@ -206,18 +208,18 @@ namespace FreeCam
             {
                 if (_inFreeCam)
                 {
-                    _commonCameraAPI.ExitCamera(_OWCamera);
+                    _commonCameraAPI.ExitCamera(OWCamera);
                 }
                 else
                 {
-					_commonCameraAPI.EnterCamera(_OWCamera);
+					_commonCameraAPI.EnterCamera(OWCamera);
 				}
             }
         }
 
 		private void OnSwitchActiveCamera(OWCamera camera)
         {
-            if (_inFreeCam && camera != _OWCamera)
+            if (_inFreeCam && camera != OWCamera)
             {
 				_inFreeCam = false;
 				if (_storedMode == InputMode.None)
@@ -226,7 +228,7 @@ namespace FreeCam
 				}
 				OWInput.ChangeInputMode(_storedMode);
 			}
-            else if (!_inFreeCam && camera == _OWCamera)
+            else if (!_inFreeCam && camera == OWCamera)
             {
 				_inFreeCam = true;
 				_storedMode = OWInput.GetInputMode();

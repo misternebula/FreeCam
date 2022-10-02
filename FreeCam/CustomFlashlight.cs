@@ -36,7 +36,7 @@ namespace FreeCam
 
         private void OnSwitchActiveCamera(OWCamera camera)
         {
-            if (camera != MainClass._OWCamera)
+            if (camera != MainClass.OWCamera)
             {
                 _light.enabled = false;
             }
@@ -44,7 +44,7 @@ namespace FreeCam
 
         void Update()
         {
-            if (Locator.GetActiveCamera() != MainClass._OWCamera) return;
+            if (Locator.GetActiveCamera() != MainClass.OWCamera) return;
 
             if (OWInput.IsNewlyPressed(InputLibrary.flashlight))
             {
