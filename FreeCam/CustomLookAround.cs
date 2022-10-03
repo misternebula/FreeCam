@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace FreeCam;
@@ -10,6 +11,8 @@ public class CustomLookAround : MonoBehaviour
 	private float _moveX;
 	private float _moveY;
 
+	private float _moveSpeed = 0.1f;
+
 	void Start() => Cursor.lockState = CursorLockMode.Locked;
 
 	void Update()
@@ -17,6 +20,14 @@ public class CustomLookAround : MonoBehaviour
 		if (OWInput.GetInputMode() != InputMode.None)
 		{
 			return;
+		}
+
+		var scrollInOut = Mouse.current.scroll.y.ReadValue();
+		_moveSpeed = Math.Max(_moveSpeed + scrollInOut * 0.05f, 0f);
+
+		if (Keyboard.current[Key.DownArrow].wasPressedThisFrame)
+		{
+			_moveSpeed = 0.1f;
 		}
 
 		var look = InputLibrary.look.GetAxisValue(true);
@@ -27,19 +38,19 @@ public class CustomLookAround : MonoBehaviour
 		_moveX = move.x;
 		_moveY = move.y;
 
-		MainClass.Camera.transform.Rotate(Vector3.up, _degreesX);
-		MainClass.Camera.transform.Rotate(Vector3.right, -_degreesY);
-		MainClass.FreeCam.transform.position += _moveY * (MainClass.FreeCam.transform.forward * 0.02f * MainClass._moveSpeed);
-		MainClass.FreeCam.transform.position += _moveX * (MainClass.FreeCam.transform.right * 0.02f * MainClass._moveSpeed);
+		transform.Rotate(Vector3.up, _degreesX);
+		transform.Rotate(Vector3.right, -_degreesY);
+		transform.position += _moveY * (transform.forward * 0.02f * _moveSpeed);
+		transform.position += _moveX * (transform.right * 0.02f * _moveSpeed);
 
 		if (Keyboard.current[Key.Q].isPressed)
 		{
-			MainClass.FreeCam.transform.Rotate(Vector3.forward, 0.25f);
+			transform.Rotate(Vector3.forward, 0.25f);
 		}
 
 		if (Keyboard.current[Key.E].isPressed)
 		{
-			MainClass.FreeCam.transform.Rotate(Vector3.forward, -0.25f);
+			transform.Rotate(Vector3.forward, -0.25f);
 		}
 	}
 }

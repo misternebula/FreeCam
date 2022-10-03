@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace FreeCam;
 
+[RequireComponent(typeof(OWCamera))]
 public class CustomFlashlight : MonoBehaviour
 {
 	private Light _light;
@@ -14,11 +15,15 @@ public class CustomFlashlight : MonoBehaviour
 	private static readonly float _slowRangeAdjust = 250f;
 	private static readonly float _fastRangeAdjust = 2500f;
 
+	private OWCamera _owCamera;
+
 	void Start()
 	{
 		_light = gameObject.AddComponent<Light>();
 		_light.range = _range;
 		_light.enabled = false;
+
+		_owCamera = gameObject.GetComponent<OWCamera>();
 
 		// Turn off the flashlight when the camera changes
 		GlobalMessenger<OWCamera>.AddListener("SwitchActiveCamera", OnSwitchActiveCamera);
@@ -31,7 +36,7 @@ public class CustomFlashlight : MonoBehaviour
 
 	private void OnSwitchActiveCamera(OWCamera camera)
 	{
-		if (camera != MainClass.OWCamera)
+		if (camera != _owCamera)
 		{
 			_light.enabled = false;
 		}
@@ -39,7 +44,7 @@ public class CustomFlashlight : MonoBehaviour
 
 	void Update()
 	{
-		if (Locator.GetActiveCamera() != MainClass.OWCamera) return;
+		if (Locator.GetActiveCamera() != _owCamera) return;
 
 		if (OWInput.IsNewlyPressed(InputLibrary.flashlight))
 		{
