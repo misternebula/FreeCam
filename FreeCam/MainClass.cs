@@ -92,6 +92,7 @@ class MainClass : ModBehaviour
 
 			FreeCam.AddComponent<CustomLookAround>();
 			FreeCam.AddComponent<CustomFlashlight>();
+			FreeCam.AddComponent<PromptController>();
 		}
 
     void Update()
