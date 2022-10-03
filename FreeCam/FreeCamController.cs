@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace FreeCam;
@@ -12,6 +13,23 @@ public class FreeCamController : MonoBehaviour
 
 	public const Key CenterOnPlayerKey = Key.Digit0;
 	public const Key CenterOnPlayerKeyAlt = Key.Numpad0;
+
+	public static readonly Dictionary<AstroObject.Name, (Key key, Key alt)> CenterOnPlanetKey = new()
+	{
+		{ AstroObject.Name.Sun, (Key.Digit1, Key.Numpad1) },
+		{ AstroObject.Name.Comet, (Key.Digit2, Key.Numpad2) },
+		{ AstroObject.Name.CaveTwin, (Key.Digit3, Key.Numpad3) },
+		{ AstroObject.Name.TowerTwin, (Key.Digit4, Key.Numpad4) },
+		{ AstroObject.Name.TimberHearth, (Key.Digit5, Key.Numpad5) },
+		{ AstroObject.Name.BrittleHollow, (Key.Digit6, Key.Numpad6) },
+		{ AstroObject.Name.GiantsDeep, (Key.Digit7, Key.Numpad7) },
+		{ AstroObject.Name.DarkBramble, (Key.Digit8, Key.Numpad8) },
+		{ AstroObject.Name.RingWorld, (Key.Digit9, Key.Numpad9) }
+	};
+
+	public const Key TeleportKey = Key.T;
+
+	public static bool HoldingTeleport { get; private set; }
 
 	public void Update()
 	{
@@ -30,73 +48,27 @@ public class FreeCamController : MonoBehaviour
 			Time.timeScale = 1f;
 		}
 
-		if (Keyboard.current[CenterOnPlayerKey].wasPressedThisFrame || Keyboard.current[CenterOnPlayerKeyAlt].wasPressedThisFrame)
+		HoldingTeleport = false;
+		if (Keyboard.current[TeleportKey].isPressed)
 		{
-			transform.parent = Locator.GetPlayerTransform();
-			transform.position = Locator.GetPlayerTransform().position;
-		}
+			HoldingTeleport = true;
 
-		if (Keyboard.current[Key.Numpad1].wasPressedThisFrame || Keyboard.current[Key.Digit1].wasPressedThisFrame)
-		{
-			var go = Locator.GetAstroObject(AstroObject.Name.Sun).gameObject.transform;
-			transform.parent = go;
-			transform.position = go.position;
-		}
+			if (Keyboard.current[CenterOnPlayerKey].wasPressedThisFrame || Keyboard.current[CenterOnPlayerKeyAlt].wasPressedThisFrame)
+			{
+				transform.parent = Locator.GetPlayerTransform();
+				transform.position = Locator.GetPlayerTransform().position;
+			}
 
-		if (Keyboard.current[Key.Numpad2].wasPressedThisFrame || Keyboard.current[Key.Digit2].wasPressedThisFrame)
-		{
-			var go = Locator.GetAstroObject(AstroObject.Name.Comet).gameObject.transform;
-			transform.parent = go;
-			transform.position = go.position;
-		}
-
-		if (Keyboard.current[Key.Numpad3].wasPressedThisFrame || Keyboard.current[Key.Digit3].wasPressedThisFrame)
-		{
-			var go = Locator.GetAstroObject(AstroObject.Name.CaveTwin).gameObject.transform;
-			transform.parent = go;
-			transform.position = go.position;
-		}
-
-		if (Keyboard.current[Key.Numpad4].wasPressedThisFrame || Keyboard.current[Key.Digit4].wasPressedThisFrame)
-		{
-			var go = Locator.GetAstroObject(AstroObject.Name.TowerTwin).gameObject.transform;
-			transform.parent = go;
-			transform.position = go.position;
-		}
-
-		if (Keyboard.current[Key.Numpad5].wasPressedThisFrame || Keyboard.current[Key.Digit5].wasPressedThisFrame)
-		{
-			var go = Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject.transform;
-			transform.parent = go;
-			transform.position = go.position;
-		}
-
-		if (Keyboard.current[Key.Numpad6].wasPressedThisFrame || Keyboard.current[Key.Digit6].wasPressedThisFrame)
-		{
-			var go = Locator.GetAstroObject(AstroObject.Name.BrittleHollow).gameObject.transform;
-			transform.parent = go;
-			transform.position = go.position;
-		}
-
-		if (Keyboard.current[Key.Numpad7].wasPressedThisFrame || Keyboard.current[Key.Digit7].wasPressedThisFrame)
-		{
-			var go = Locator.GetAstroObject(AstroObject.Name.GiantsDeep).gameObject.transform;
-			transform.parent = go;
-			transform.position = go.position;
-		}
-
-		if (Keyboard.current[Key.Numpad8].wasPressedThisFrame || Keyboard.current[Key.Digit8].wasPressedThisFrame)
-		{
-			var go = Locator.GetAstroObject(AstroObject.Name.DarkBramble).gameObject.transform;
-			transform.parent = go;
-			transform.position = go.position;
-		}
-
-		if (Keyboard.current[Key.Numpad9].wasPressedThisFrame || Keyboard.current[Key.Digit9].wasPressedThisFrame)
-		{
-			var go = Locator.GetAstroObject(AstroObject.Name.RingWorld).gameObject.transform;
-			transform.parent = go;
-			transform.position = go.position;
+			foreach (var planet in CenterOnPlanetKey.Keys)
+			{
+				var (key, alt) = CenterOnPlanetKey[planet];
+				if (Keyboard.current[key].wasPressedThisFrame || Keyboard.current[alt].wasPressedThisFrame)
+				{
+					var go = Locator.GetAstroObject(planet).gameObject.transform;
+					transform.parent = go;
+					transform.position = go.position;
+				}
+			}
 		}
 
 		if (Keyboard.current[GUIKey].wasPressedThisFrame)
