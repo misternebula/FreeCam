@@ -17,8 +17,6 @@ public class PromptController : MonoBehaviour
 
 	private CustomFlashlight _customFlashlight;
 
-	private bool _loaded;
-
 	private static readonly UIInputCommands _rotateLeftCmd = new ("FREECAM - RotateLeft", KeyCode.Q);
 	private static readonly UIInputCommands _rotateRightCmd = new ("FREECAM - RotateRight", KeyCode.E);
 	private static readonly UIInputCommands _scrollCmd = new ("FREECAM - Scroll", KeyCode.Mouse2);
@@ -29,8 +27,6 @@ public class PromptController : MonoBehaviour
 	private void Start()
 	{
 		_customFlashlight = GetComponent<CustomFlashlight>();
-
-		_loaded = true;
 
 		// Top right
 		_togglePrompt = AddPrompt("Toggle FreeCam", PromptPosition.UpperLeft, FreeCamController.ToggleKey);
@@ -71,8 +67,6 @@ public class PromptController : MonoBehaviour
 
 	private void Update()
 	{
-		if (!_loaded) return;
-
 		var paused = OWTime.IsPaused();
 
 		// Top right
