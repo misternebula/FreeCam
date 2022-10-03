@@ -15,6 +15,7 @@ class MainClass : ModBehaviour
 	private OWCamera _owCamera;
 
 	public static bool InFreeCam { get; private set; }
+	public static bool ShowPrompts { get; private set; }
 
 	private InputMode _storedMode;
 	private int _fov;
@@ -58,7 +59,8 @@ class MainClass : ModBehaviour
 
 	public override void Configure(IModConfig config)
 	{
-		_fov = config.GetSettingsValue<int>("fov");
+		_fov = config.GetSettingsValue<int>("FOV");
+		ShowPrompts = !config.GetSettingsValue<bool>("Hide Prompts");
 
 		// If the mod is currently active we can set these immediately
 		if (_camera != null)

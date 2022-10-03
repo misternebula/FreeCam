@@ -67,7 +67,7 @@ public class PromptController : MonoBehaviour
 
 	private void Update()
 	{
-		var visible = !OWTime.IsPaused() && !GUIMode.IsHiddenMode();
+		var visible = !OWTime.IsPaused() && !GUIMode.IsHiddenMode() && MainClass.ShowPrompts;
 
 		// Top right
 		_togglePrompt.SetVisibility(visible);

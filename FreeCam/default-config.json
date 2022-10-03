@@ -1,7 +1,7 @@
 {
   "enabled": true,
   "settings": {
-    "disableLauncher": false,
-    "fov": 90
+    "FOV": 90,
+    "Hide Prompts": false
   }
 }
