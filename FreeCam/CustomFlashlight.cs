@@ -52,24 +52,20 @@ public class CustomFlashlight : MonoBehaviour
 		}
 
 		// Adjust range of the light
-		// Teleport keys overlap with the tool option keys
-		if (!FreeCamController.HoldingTeleport)
+		if (Keyboard.current[Key.LeftBracket].IsPressed())
 		{
-			if (OWInput.IsPressed(InputLibrary.toolOptionLeft))
-			{
-				var rate = Keyboard.current[Key.LeftShift].IsPressed() ? _fastRangeAdjust : _slowRangeAdjust;
+			var rate = Keyboard.current[Key.LeftShift].IsPressed() ? _fastRangeAdjust : _slowRangeAdjust;
 
-				_range = Mathf.Clamp(_range - (rate * Time.deltaTime), _minRange, _maxRange);
-				_light.range = _range;
-			}
+			_range = Mathf.Clamp(_range - (rate * Time.deltaTime), _minRange, _maxRange);
+			_light.range = _range;
+		}
 
-			if (OWInput.IsPressed(InputLibrary.toolOptionRight))
-			{
-				var rate = Keyboard.current[Key.LeftShift].IsPressed() ? _fastRangeAdjust : _slowRangeAdjust;
+		if (Keyboard.current[Key.RightBracket].IsPressed())
+		{
+			var rate = Keyboard.current[Key.LeftShift].IsPressed() ? _fastRangeAdjust : _slowRangeAdjust;
 
-				_range = Mathf.Clamp(_range + (rate * Time.deltaTime), _minRange, _maxRange);
-				_light.range = _range;
-			}
+			_range = Mathf.Clamp(_range + (rate * Time.deltaTime), _minRange, _maxRange);
+			_light.range = _range;
 		}
 	}
 

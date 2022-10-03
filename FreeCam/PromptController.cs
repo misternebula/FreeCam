@@ -2,21 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 namespace FreeCam;
 
 public class PromptController : MonoBehaviour
 {
-	private ScreenPrompt _togglePrompt, _guiPrompt, _teleportOptions, _scrollPrompt, _rotateLeftPrompt, _rotateRightPrompt, _resetSpeed;
+	private ScreenPrompt _togglePrompt, _guiPrompt, _teleportOptions, _scrollPrompt, _rotatePrompt;
 	private ScreenPrompt _centerPrompt;
 	private List<ScreenPrompt> _planetPrompts;
+
+	private List<ScreenPrompt> _timePrompts;
 
 	private ScreenPrompt _flashlightPrompt, _flashlightRangePrompt, _flashlightSpeedPrompt;
 
 	private CustomFlashlight _customFlashlight;
 
 	private bool _loaded;
+
+	private static readonly UIInputCommands _rotateLeftCmd = new ("FREECAM - RotateLeft", KeyCode.Q);
+	private static readonly UIInputCommands _rotateRightCmd = new ("FREECAM - RotateRight", KeyCode.E);
+	private static readonly UIInputCommands _scrollCmd = new ("FREECAM - Scroll", KeyCode.Mouse2);
+	private static readonly UIInputCommands _resetCmd = new ("FREECAM - Reset", KeyCode.DownArrow);
+	private static readonly UIInputCommands _rangeDown = new ("FREECAM - RangeDown", KeyCode.LeftBracket);
+	private static readonly UIInputCommands _rangeUp = new ("FREECAM - RangeUp", KeyCode.RightBracket);
 
 	private void Start()
 	{
@@ -25,33 +33,40 @@ public class PromptController : MonoBehaviour
 		_loaded = true;
 
 		// Top right
-		_togglePrompt = AddPrompt("Toggle FreeCam", PromptPosition.UpperRight, FreeCamController.ToggleKey);
-		_guiPrompt = AddPrompt("Hide HUD", PromptPosition.UpperRight, FreeCamController.GUIKey);
-		
-		_scrollPrompt = AddPrompt("Movement speed   <CMD> (Scroll)", PromptPosition.UpperRight, KeyCode.Mouse2);
-		_resetSpeed = AddPrompt("Reset movement speed", PromptPosition.UpperRight, KeyCode.DownArrow);
+		_togglePrompt = AddPrompt("Toggle FreeCam", PromptPosition.UpperLeft, FreeCamController.ToggleKey);
+		_guiPrompt = AddPrompt("Hide HUD", PromptPosition.UpperLeft, FreeCamController.GUIKey);
 
-		_rotateLeftPrompt = AddPrompt("Rotate left", PromptPosition.UpperRight, KeyCode.Q);
-		_rotateRightPrompt = AddPrompt("Rotate right", PromptPosition.UpperRight, KeyCode.E);
+		_scrollPrompt = new ScreenPrompt(_scrollCmd, _resetCmd, "Movement speed   <CMD1> Reset   <CMD2>", ScreenPrompt.MultiCommandType.CUSTOM_BOTH);
+		Locator.GetPromptManager().AddScreenPrompt(_scrollPrompt, PromptPosition.UpperLeft, false);
+
+		_rotatePrompt = new ScreenPrompt(_rotateLeftCmd, _rotateRightCmd, "Rotate   <CMD1> <CMD2>", ScreenPrompt.MultiCommandType.CUSTOM_BOTH);
+		Locator.GetPromptManager().AddScreenPrompt(_rotatePrompt, PromptPosition.UpperLeft, false);
 
 		// Top Left
-		_teleportOptions = AddPrompt("Parent options   <CMD>" + UITextLibrary.GetString(UITextType.HoldPrompt), PromptPosition.UpperLeft, FreeCamController.TeleportKey);
-		_centerPrompt = AddPrompt("Player", PromptPosition.UpperLeft, FreeCamController.CenterOnPlayerKey);
+		_teleportOptions = AddPrompt("Parent options   <CMD>" + UITextLibrary.GetString(UITextType.HoldPrompt), PromptPosition.UpperRight, FreeCamController.TeleportKey);
+		_centerPrompt = AddPrompt("Player", PromptPosition.UpperRight, FreeCamController.CenterOnPlayerKey);
 		
 		_planetPrompts = new();
 		foreach (var planet in FreeCamController.CenterOnPlanetKey.Keys)
 		{
-			_planetPrompts.Add(AddPrompt(AstroObject.AstroObjectNameToString(planet), PromptPosition.UpperLeft, FreeCamController.CenterOnPlanetKey[planet].key));
+			_planetPrompts.Add(AddPrompt(AstroObject.AstroObjectNameToString(planet), PromptPosition.UpperRight, FreeCamController.CenterOnPlanetKey[planet].key));
 		}
 
-		// Bottom right
+		// Flashlight
 		_flashlightPrompt = new ScreenPrompt(InputLibrary.flashlight, UITextLibrary.GetString(UITextType.FlashlightPrompt) + "   <CMD>" + UITextLibrary.GetString(UITextType.PressPrompt));
-		Locator.GetPromptManager().AddScreenPrompt(_flashlightPrompt, PromptPosition.LowerLeft, false);
+		Locator.GetPromptManager().AddScreenPrompt(_flashlightPrompt, PromptPosition.UpperLeft, false);
 
-		_flashlightRangePrompt = new ScreenPrompt(InputLibrary.toolOptionLeft, InputLibrary.toolOptionRight, "Flashlight range   <CMD1> <CMD2>", ScreenPrompt.MultiCommandType.CUSTOM_BOTH);
-		Locator.GetPromptManager().AddScreenPrompt(_flashlightRangePrompt, PromptPosition.LowerLeft, false);
+		_flashlightRangePrompt = new ScreenPrompt(_rangeDown, _rangeUp, "Flashlight range   <CMD1> <CMD2>", ScreenPrompt.MultiCommandType.CUSTOM_BOTH);
+		Locator.GetPromptManager().AddScreenPrompt(_flashlightRangePrompt, PromptPosition.UpperLeft, false);
 
-		_flashlightSpeedPrompt = AddPrompt("Adjust range faster <CMD>" + UITextLibrary.GetString(UITextType.HoldPrompt), PromptPosition.LowerLeft, Key.LeftShift);
+		_flashlightSpeedPrompt = AddPrompt("Adjust range faster   <CMD>" + UITextLibrary.GetString(UITextType.HoldPrompt), PromptPosition.UpperLeft, Key.RightShift);
+
+		_timePrompts = new()
+		{
+			AddPrompt("0% game speed", PromptPosition.LowerLeft, Key.Comma),
+			AddPrompt("50% game speed", PromptPosition.LowerLeft, Key.Period),
+			AddPrompt("100% game speed", PromptPosition.LowerLeft, Key.Slash)
+		};
 	}
 
 	private void Update()
@@ -65,9 +80,7 @@ public class PromptController : MonoBehaviour
 
 		_guiPrompt.SetVisibility(!paused && MainClass.InFreeCam);
 		_scrollPrompt.SetVisibility(!paused && MainClass.InFreeCam);
-		_rotateLeftPrompt.SetVisibility(!paused && MainClass.InFreeCam);
-		_rotateRightPrompt.SetVisibility(!paused && MainClass.InFreeCam);
-		_resetSpeed.SetVisibility(!paused && MainClass.InFreeCam);
+		_rotatePrompt.SetVisibility(!paused && MainClass.InFreeCam);
 
 		// Top left
 		_teleportOptions.SetVisibility(!paused && MainClass.InFreeCam);
@@ -77,10 +90,16 @@ public class PromptController : MonoBehaviour
 			planetPrompt.SetVisibility(!paused && MainClass.InFreeCam && FreeCamController.HoldingTeleport);
 		}
 
-		// Bottom left
-		_flashlightPrompt.SetVisibility(!paused && MainClass.InFreeCam && !FreeCamController.HoldingTeleport);
-		_flashlightRangePrompt.SetVisibility(!paused && MainClass.InFreeCam && _customFlashlight.FlashlightOn() && !FreeCamController.HoldingTeleport);
-		_flashlightSpeedPrompt.SetVisibility(!paused && MainClass.InFreeCam && _customFlashlight.FlashlightOn() && !FreeCamController.HoldingTeleport);
+		// Flashlight
+		_flashlightPrompt.SetVisibility(!paused && MainClass.InFreeCam);
+		_flashlightRangePrompt.SetVisibility(!paused && MainClass.InFreeCam && _customFlashlight.FlashlightOn());
+		_flashlightSpeedPrompt.SetVisibility(!paused && MainClass.InFreeCam && _customFlashlight.FlashlightOn());
+
+		// Time
+		foreach (var prompt in _timePrompts)
+		{
+			prompt.SetVisibility(!paused && MainClass.InFreeCam);
+		}
 	}
 
 	private static ScreenPrompt AddPrompt(string text, PromptPosition position, Key key)
