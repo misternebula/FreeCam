@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace FreeCam;
 
@@ -19,7 +20,14 @@ internal class UIInputCommands : IInputCommands
 		_textures = keys.Select(key => ButtonPromptLibrary.SharedInstance.GetButtonTexture(key)).ToArray();
 		_cmd = EnumUtils.Create<InputConsts.InputCommandType>(name);
 
-		InputCommandManager.MappedInputActions.Add(_cmd, this);
+		SceneManager.sceneLoaded += OnSceneLoad;
+
+		Refresh();
+	}
+
+	~UIInputCommands()
+	{
+		SceneManager.sceneLoaded -= OnSceneLoad;
 	}
 
 	public List<Texture2D> GetUITextures(bool gamepad, bool forceRefresh = false)
@@ -33,6 +41,16 @@ internal class UIInputCommands : IInputCommands
 	} 
 
 	public InputConsts.InputCommandType CommandType => _cmd;
+
+	public void OnSceneLoad(Scene scene, LoadSceneMode mode) => Refresh();
+
+	private void Refresh()
+	{
+		if (!InputCommandManager.MappedInputActions.ContainsKey(CommandType))
+		{
+			InputCommandManager.MappedInputActions.Add(CommandType, this);
+		}
+	}
 
 	#region Unused interface
 
