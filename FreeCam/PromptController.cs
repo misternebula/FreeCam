@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,30 +6,39 @@ namespace FreeCam;
 
 public class PromptController : MonoBehaviour
 {
-	private ScreenPrompt _togglePrompt;
+	private ScreenPrompt _togglePrompt, _guiPrompt;
+
+	private bool _loaded;
 
 	private void Start()
 	{
-		if (_togglePrompt == null)
-		{
-			_togglePrompt = new ScreenPrompt("Toggle free cam", GetButtonSprite(KeyCode.Semicolon));
-			Locator.GetPromptManager().AddScreenPrompt(_togglePrompt, PromptPosition.UpperRight, false);
-		}
+		_loaded = true;
+
+		_togglePrompt = AddPrompt("Toggle FreeCam", FreeCamController.ToggleKey);
+		_guiPrompt = AddPrompt("Hide HUD", FreeCamController.GUIKey);
 	}
 
 	private void Update()
 	{
-		if (_togglePrompt != null)
-		{
-			_togglePrompt.SetVisibility(!OWTime.IsPaused());
-		}
+		if (!_loaded) return;
+
+		var paused = OWTime.IsPaused();
+
+		_togglePrompt.SetVisibility(!paused);
+		_guiPrompt.SetVisibility(!paused && MainClass.InFreeCam);
 	}
 
-	private static Sprite GetButtonSprite(KeyCode key)
+	private static ScreenPrompt AddPrompt(string text, Key key)
 	{
-		var texture = ButtonPromptLibrary.SharedInstance.GetButtonTexture(key);
+		Enum.TryParse(key.ToString(), out KeyCode keyCode);
+
+		var texture = ButtonPromptLibrary.SharedInstance.GetButtonTexture(keyCode);
 		var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100, 0, SpriteMeshType.FullRect, Vector4.zero, false);
 		sprite.name = texture.name;
-		return sprite;
+
+		var prompt = new ScreenPrompt(text, sprite);
+		Locator.GetPromptManager().AddScreenPrompt(prompt, PromptPosition.UpperRight, false);
+
+		return prompt;
 	}
 }
