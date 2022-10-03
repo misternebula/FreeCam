@@ -1,5 +1,9 @@
 # FreeCam
 
+Allows you to freely move a camera around the solar system!
+
+![image](https://user-images.githubusercontent.com/22628069/193505038-bd1545e2-8d62-4758-aa81-ed388e10368b.png)
+
 ## Controls
 
 | **Keypad Key** | **Keyboard Key** | **Function** |
