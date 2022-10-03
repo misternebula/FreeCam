@@ -10,20 +10,11 @@ public class FreeCamController : MonoBehaviour
 
 	public const Key GUIKey = Key.Quote;
 
+	public const Key CenterOnPlayerKey = Key.Digit0;
+	public const Key CenterOnPlayerKeyAlt = Key.Numpad0;
+
 	public void Update()
 	{
-		if (Keyboard.current[Key.LeftArrow].wasPressedThisFrame)
-		{
-			if (Locator.GetPlayerSuit().IsWearingHelmet())
-			{
-				Locator.GetPlayerSuit().RemoveHelmet();
-			}
-			else
-			{
-				Locator.GetPlayerSuit().PutOnHelmet();
-			}
-		}
-
 		if (Keyboard.current[Key.NumpadDivide].wasPressedThisFrame || Keyboard.current[Key.Comma].wasPressedThisFrame)
 		{
 			Time.timeScale = 0f;
@@ -39,7 +30,7 @@ public class FreeCamController : MonoBehaviour
 			Time.timeScale = 1f;
 		}
 
-		if (Keyboard.current[Key.Numpad0].wasPressedThisFrame || Keyboard.current[Key.Digit0].wasPressedThisFrame)
+		if (Keyboard.current[CenterOnPlayerKey].wasPressedThisFrame || Keyboard.current[CenterOnPlayerKeyAlt].wasPressedThisFrame)
 		{
 			transform.parent = Locator.GetPlayerTransform();
 			transform.position = Locator.GetPlayerTransform().position;

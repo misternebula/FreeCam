@@ -52,7 +52,7 @@ public class CustomFlashlight : MonoBehaviour
 		}
 
 		// Adjust range of the light
-		if (Keyboard.current[Key.LeftBracket].IsPressed())
+		if (OWInput.IsNewlyPressed(InputLibrary.toolOptionLeft))
 		{
 			var rate = Keyboard.current[Key.LeftShift].IsPressed() ? _fastRangeAdjust : _slowRangeAdjust;
 
@@ -60,7 +60,7 @@ public class CustomFlashlight : MonoBehaviour
 			_light.range = _range;
 		}
 
-		if (Keyboard.current[Key.RightBracket].IsPressed())
+		if (OWInput.IsNewlyPressed(InputLibrary.toolOptionRight))
 		{
 			var rate = Keyboard.current[Key.LeftShift].IsPressed() ? _fastRangeAdjust : _slowRangeAdjust;
 
@@ -68,4 +68,6 @@ public class CustomFlashlight : MonoBehaviour
 			_light.range = _range;
 		}
 	}
+
+	public bool FlashlightOn() => _light.enabled;
 }
