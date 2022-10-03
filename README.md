@@ -6,6 +6,8 @@ Allows you to freely move a camera around the solar system!
 
 ## Controls
 
+Keyboard keys are shown in game with button prompts (can be hidden in the mod options).
+
 | **Keypad Key** | **Keyboard Key** | **Function** |
 |---|---|---|
 | Keypad . | ; | Toggle on/off  |
@@ -27,6 +29,5 @@ Allows you to freely move a camera around the solar system!
 | Keypad 9 | 9 | Lock onto The Stranger |
 |  | F | Toggle flashlight |
 |  | [ or ] | Increase/decrease light range |
-|  | Up arrow | Reinit camera |
 |  | Down arrow | Reset move speed to 0.1 |
-|  | Left arrow | Toggle helmet |
+|  | " | Toggle HUD visibility |
