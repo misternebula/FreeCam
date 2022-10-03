@@ -67,32 +67,32 @@ public class PromptController : MonoBehaviour
 
 	private void Update()
 	{
-		var paused = OWTime.IsPaused();
+		var visible = !OWTime.IsPaused() && !GUIMode.IsHiddenMode();
 
 		// Top right
-		_togglePrompt.SetVisibility(!paused);
+		_togglePrompt.SetVisibility(visible);
 
-		_guiPrompt.SetVisibility(!paused && MainClass.InFreeCam);
-		_scrollPrompt.SetVisibility(!paused && MainClass.InFreeCam);
-		_rotatePrompt.SetVisibility(!paused && MainClass.InFreeCam);
+		_guiPrompt.SetVisibility(visible && MainClass.InFreeCam);
+		_scrollPrompt.SetVisibility(visible && MainClass.InFreeCam);
+		_rotatePrompt.SetVisibility(visible && MainClass.InFreeCam);
 
 		// Top left
-		_teleportOptions.SetVisibility(!paused && MainClass.InFreeCam);
-		_centerPrompt.SetVisibility(!paused && MainClass.InFreeCam && FreeCamController.HoldingTeleport);
+		_teleportOptions.SetVisibility(visible && MainClass.InFreeCam);
+		_centerPrompt.SetVisibility(visible && MainClass.InFreeCam && FreeCamController.HoldingTeleport);
 		foreach (var planetPrompt in _planetPrompts)
 		{
-			planetPrompt.SetVisibility(!paused && MainClass.InFreeCam && FreeCamController.HoldingTeleport);
+			planetPrompt.SetVisibility(visible && MainClass.InFreeCam && FreeCamController.HoldingTeleport);
 		}
 
 		// Flashlight
-		_flashlightPrompt.SetVisibility(!paused && MainClass.InFreeCam);
-		_flashlightRangePrompt.SetVisibility(!paused && MainClass.InFreeCam && _customFlashlight.FlashlightOn());
-		_flashlightSpeedPrompt.SetVisibility(!paused && MainClass.InFreeCam && _customFlashlight.FlashlightOn());
+		_flashlightPrompt.SetVisibility(visible && MainClass.InFreeCam);
+		_flashlightRangePrompt.SetVisibility(visible && MainClass.InFreeCam && _customFlashlight.FlashlightOn());
+		_flashlightSpeedPrompt.SetVisibility(visible && MainClass.InFreeCam && _customFlashlight.FlashlightOn());
 
 		// Time
 		foreach (var prompt in _timePrompts)
 		{
-			prompt.SetVisibility(!paused && MainClass.InFreeCam);
+			prompt.SetVisibility(visible && MainClass.InFreeCam);
 		}
 	}
 
