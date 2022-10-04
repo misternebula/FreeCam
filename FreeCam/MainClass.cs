@@ -21,6 +21,7 @@ class MainClass : ModBehaviour
 	private InputMode _storedMode;
 	private int _fov;
 	private ICommonCameraAPI _commonCameraAPI;
+	private GameObject _hud;
 	private static MainClass _instance;
 
 	public void Start()
@@ -93,6 +94,8 @@ class MainClass : ModBehaviour
 		_freeCam.AddComponent<PromptController>();
 
 		_freeCam.SetActive(true);
+
+		_hud = GameObject.Find("Player_Body/PlayerCamera/Helmet/HelmetRoot/HelmetMesh").gameObject;
 	}
 
 	private void OnSwitchActiveCamera(OWCamera camera)
@@ -119,10 +122,12 @@ class MainClass : ModBehaviour
 		if (InFreeCam)
 		{
 			_instance._commonCameraAPI.ExitCamera(_instance._owCamera);
+			_instance._hud.SetActive(false);
 		}
 		else
 		{
 			_instance._commonCameraAPI.EnterCamera(_instance._owCamera);
+			_instance._hud.SetActive(true);
 		}
 	}
 
