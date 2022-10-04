@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using FreeCam.Components;
+using HarmonyLib;
 using OWML.Common;
 using OWML.ModHelper;
 using System;
