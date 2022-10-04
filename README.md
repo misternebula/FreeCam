@@ -1,6 +1,12 @@
 # FreeCam
 
+Allows you to freely move a camera around the solar system!
+
+![image](https://user-images.githubusercontent.com/22628069/193596035-0068ccf0-3388-4096-81e1-8c43224f629d.png)
+
 ## Controls
+
+Keyboard keys are shown in game with button prompts (can be hidden in the mod options). There are some alternative keys on the keypad.
 
 | **Keypad Key** | **Keyboard Key** | **Function** |
 |---|---|---|
@@ -23,6 +29,5 @@
 | Keypad 9 | 9 | Lock onto The Stranger |
 |  | F | Toggle flashlight |
 |  | [ or ] | Increase/decrease light range |
-|  | Up arrow | Reinit camera |
 |  | Down arrow | Reset move speed to 0.1 |
-|  | Left arrow | Toggle helmet |
+|  | " | Toggle HUD visibility |

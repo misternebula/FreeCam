@@ -1,240 +1,152 @@
-﻿using HarmonyLib;
+﻿using FreeCam.Components;
+using HarmonyLib;
 using OWML.Common;
 using OWML.ModHelper;
 using System;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-namespace FreeCam
+namespace FreeCam;
+
+class MainClass : ModBehaviour
 {
-    class MainClass : ModBehaviour
-    {
-        public static GameObject _freeCam;
-        public static Camera _camera;
-        public static OWCamera _OWCamera;
+	private GameObject _freeCam;
+	private Camera _camera;
+	private OWCamera _owCamera;
 
-        public static float _moveSpeed = 0.1f;
+	public static bool InFreeCam { get; private set; }
+	public static bool ShowPrompts { get; private set; }
 
-        InputMode _storedMode;
-        bool _inFreeCam = false;
-        public int _fov;
+	private InputMode _storedMode;
+	private int _fov;
+	private ICommonCameraAPI _commonCameraAPI;
+	private GameObject _hud;
+	private static MainClass _instance;
 
-		private ICommonCameraAPI _commonCameraAPI;
+	public void Start()
+	{
+		Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 
-        private static MainClass _instance;
+		_instance = this;
 
-        public void Start()
-        {
-			Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
-
-			_instance = this;
-
-			try
+		try
+		{
+			_commonCameraAPI = ModHelper.Interaction.TryGetModApi<ICommonCameraAPI>("xen.CommonCameraUtility");
+		}
+		catch (Exception e)
+		{
+			WriteError($"{e}");
+		}
+		finally
+		{
+			if (_commonCameraAPI == null)
 			{
-				_commonCameraAPI = ModHelper.Interaction.TryGetModApi<ICommonCameraAPI>("xen.CommonCameraUtility");
+				WriteError($"CommonCameraAPI was not found. FreeCam will not run.");
+				enabled = false;
 			}
-			catch (Exception e)
-			{
-				WriteError($"{e}");
-			}
-			finally
-			{
-				if (_commonCameraAPI == null)
-				{
-					WriteError($"CommonCameraAPI was not found. FreeCam will not run.");
-					enabled = false;
-				}
-			}
-
-			GlobalMessenger<OWCamera>.AddListener("SwitchActiveCamera", OnSwitchActiveCamera);
-
-			SceneManager.sceneLoaded += OnSceneLoaded;
-        }
-
-        void OnDestroy()
-        {
-			GlobalMessenger<OWCamera>.RemoveListener("SwitchActiveCamera", OnSwitchActiveCamera);
-
-			SceneManager.sceneLoaded -= OnSceneLoaded;
-        }
-
-        public override void Configure(IModConfig config)
-        {
-            _fov = config.GetSettingsValue<int>("fov");
-
-            // If the mod is currently active we can set these immediately
-            if (_camera != null)
-            {
-                _camera.fieldOfView = _fov;
-                _OWCamera.fieldOfView = _fov;
-            }
-        }
-
-        private void OnSceneLoaded(Scene scene, LoadSceneMode _)
-        {
-			Write($"Loading scene {scene.name}");
-
-            if (scene.name != "SolarSystem" && scene.name != "EyeOfTheUniverse") return;
-
-            _inFreeCam = false;
-
-			(_OWCamera, _camera) = _commonCameraAPI.CreateCustomCamera("FREECAM", (OWCamera cam) =>
-			{
-				cam.mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
-				cam.mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("HeadsUpDisplay"));
-				cam.mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("HelmetUVPass"));
-			});
-			_freeCam = _camera.gameObject;
-
-			_freeCam.AddComponent<CustomLookAround>();
-			_freeCam.AddComponent<CustomFlashlight>();
 		}
 
-        void Update()
-        {
-            if (Keyboard.current[Key.DownArrow].wasPressedThisFrame)
-            {
-                _moveSpeed = 0.1f;
-            }
+		GlobalMessenger<OWCamera>.AddListener("SwitchActiveCamera", OnSwitchActiveCamera);
 
-            if (Keyboard.current[Key.LeftArrow].wasPressedThisFrame)
-            {
-                if (Locator.GetPlayerSuit().IsWearingHelmet())
-                {
-                    Locator.GetPlayerSuit().RemoveHelmet();
-                }
-                else
-                {
-                    Locator.GetPlayerSuit().PutOnHelmet();
-                }
-            }
-
-            if (Keyboard.current[Key.NumpadDivide].wasPressedThisFrame || Keyboard.current[Key.Comma].wasPressedThisFrame)
-            {
-                Time.timeScale = 0f;
-            }
-
-            if (Keyboard.current[Key.NumpadMultiply].wasPressedThisFrame || Keyboard.current[Key.Period].wasPressedThisFrame)
-            {
-                Time.timeScale = 0.5f;
-            }
-
-            if (Keyboard.current[Key.NumpadMinus].wasPressedThisFrame || Keyboard.current[Key.Slash].wasPressedThisFrame)
-            {
-                Time.timeScale = 1f;
-            }
-
-            if (Keyboard.current[Key.Numpad0].wasPressedThisFrame || Keyboard.current[Key.Digit0].wasPressedThisFrame)
-            {
-                _freeCam.transform.parent = Locator.GetPlayerTransform();
-                _freeCam.transform.position = Locator.GetPlayerTransform().position;
-            }
-
-            if (Keyboard.current[Key.Numpad1].wasPressedThisFrame || Keyboard.current[Key.Digit1].wasPressedThisFrame)
-            {
-                var go = Locator.GetAstroObject(AstroObject.Name.Sun).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
-            }
-
-            if (Keyboard.current[Key.Numpad2].wasPressedThisFrame || Keyboard.current[Key.Digit2].wasPressedThisFrame)
-            {
-                var go = Locator.GetAstroObject(AstroObject.Name.Comet).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
-            }
-
-            if (Keyboard.current[Key.Numpad3].wasPressedThisFrame || Keyboard.current[Key.Digit3].wasPressedThisFrame)
-            {
-                var go = Locator.GetAstroObject(AstroObject.Name.CaveTwin).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
-            }
-
-            if (Keyboard.current[Key.Numpad4].wasPressedThisFrame || Keyboard.current[Key.Digit4].wasPressedThisFrame)
-            {
-                var go = Locator.GetAstroObject(AstroObject.Name.TowerTwin).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
-            }
-
-            if (Keyboard.current[Key.Numpad5].wasPressedThisFrame || Keyboard.current[Key.Digit5].wasPressedThisFrame)
-            {
-                var go = Locator.GetAstroObject(AstroObject.Name.TimberHearth).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
-            }
-
-            if (Keyboard.current[Key.Numpad6].wasPressedThisFrame || Keyboard.current[Key.Digit6].wasPressedThisFrame)
-            {
-                var go = Locator.GetAstroObject(AstroObject.Name.BrittleHollow).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
-            }
-
-            if (Keyboard.current[Key.Numpad7].wasPressedThisFrame || Keyboard.current[Key.Digit7].wasPressedThisFrame)
-            {
-                var go = Locator.GetAstroObject(AstroObject.Name.GiantsDeep).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
-            }
-
-            if (Keyboard.current[Key.Numpad8].wasPressedThisFrame || Keyboard.current[Key.Digit8].wasPressedThisFrame)
-            {
-                var go = Locator.GetAstroObject(AstroObject.Name.DarkBramble).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
-            }
-
-            if (Keyboard.current[Key.Numpad9].wasPressedThisFrame || Keyboard.current[Key.Digit9].wasPressedThisFrame)
-            {
-                var go = Locator.GetAstroObject(AstroObject.Name.RingWorld).gameObject.transform;
-                _freeCam.transform.parent = go;
-                _freeCam.transform.position = go.position;
-            }
-
-            var scrollInOut = Mouse.current.scroll.y.ReadValue();
-            _moveSpeed += scrollInOut * 0.05f;
-            if (_moveSpeed < 0)
-            {
-                _moveSpeed = 0;
-            }
-
-            if (Keyboard.current[Key.NumpadPeriod].wasPressedThisFrame || Keyboard.current[Key.Semicolon].wasPressedThisFrame)
-            {
-                if (_inFreeCam)
-                {
-                    _commonCameraAPI.ExitCamera(_OWCamera);
-                }
-                else
-                {
-					_commonCameraAPI.EnterCamera(_OWCamera);
-				}
-            }
-        }
-
-		private void OnSwitchActiveCamera(OWCamera camera)
-        {
-            if (_inFreeCam && camera != _OWCamera)
-            {
-				_inFreeCam = false;
-				if (_storedMode == InputMode.None)
-				{
-					_storedMode = InputMode.Character;
-				}
-				OWInput.ChangeInputMode(_storedMode);
-			}
-            else if (!_inFreeCam && camera == _OWCamera)
-            {
-				_inFreeCam = true;
-				_storedMode = OWInput.GetInputMode();
-				OWInput.ChangeInputMode(InputMode.None);
-			}
-        }
-
-		public static void Write(string msg) => _instance.ModHelper.Console.WriteLine($"[FreeCam] : {msg}", MessageType.Info);
-        public static void WriteError(string msg) => _instance.ModHelper.Console.WriteLine($"[FreeCam] : {msg}", MessageType.Error);
+		SceneManager.sceneLoaded += OnSceneLoaded;
 	}
+
+	void OnDestroy()
+	{
+		GlobalMessenger<OWCamera>.RemoveListener("SwitchActiveCamera", OnSwitchActiveCamera);
+
+		SceneManager.sceneLoaded -= OnSceneLoaded;
+	}
+
+	public override void Configure(IModConfig config)
+	{
+		_fov = config.GetSettingsValue<int>("FOV");
+		ShowPrompts = !config.GetSettingsValue<bool>("Hide Prompts");
+
+		// If the mod is currently active we can set these immediately
+		if (_camera != null)
+		{
+			_camera.fieldOfView = _fov;
+			_owCamera.fieldOfView = _fov;
+		}
+	}
+
+	private void OnSceneLoaded(Scene scene, LoadSceneMode _)
+	{
+		Write($"Loading scene {scene.name}");
+
+		if (scene.name != "SolarSystem" && scene.name != "EyeOfTheUniverse") return;
+
+		InFreeCam = false;
+
+		(_owCamera, _camera) = _commonCameraAPI.CreateCustomCamera("FREECAM", (OWCamera cam) =>
+		{
+			cam.mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("UI"));
+			cam.mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("HeadsUpDisplay"));
+			cam.mainCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("HelmetUVPass"));
+		});
+		_freeCam = _camera.gameObject;
+
+		_freeCam.AddComponent<CustomLookAround>();
+		_freeCam.AddComponent<CustomFlashlight>();
+		_freeCam.AddComponent<FreeCamController>();
+		_freeCam.AddComponent<PromptController>();
+
+		_freeCam.SetActive(true);
+
+		_hud = GameObject.Find("Player_Body/PlayerCamera/Helmet/HelmetRoot/HelmetMesh").gameObject;
+	}
+
+	private void OnSwitchActiveCamera(OWCamera camera)
+	{
+		if (InFreeCam && camera != _owCamera)
+		{
+			InFreeCam = false;
+			if (_storedMode == InputMode.None)
+			{
+				_storedMode = InputMode.Character;
+			}
+			OWInput.ChangeInputMode(_storedMode);
+		}
+		else if (!InFreeCam && camera == _owCamera)
+		{
+			InFreeCam = true;
+			_storedMode = OWInput.GetInputMode();
+			OWInput.ChangeInputMode(InputMode.None);
+		}
+	}
+
+	public static void ToggleFreeCam()
+	{
+		if (InFreeCam)
+		{
+			_instance._commonCameraAPI.ExitCamera(_instance._owCamera);
+
+			// Only re-enable the helmet HUD if we aren't already hiding the GUI
+			if (!GUIMode.IsHiddenMode())
+			{
+				_instance._hud.SetActive(true);
+			}
+		}
+		else
+		{
+			_instance._commonCameraAPI.EnterCamera(_instance._owCamera);
+			_instance._hud.SetActive(false);
+		}
+	}
+
+	public static void ToggleHUD()
+	{
+		GUIMode.SetRenderMode(GUIMode.IsHiddenMode() ? GUIMode.RenderMode.FPS : GUIMode.RenderMode.Hidden);
+
+		// Turning the HUD back on while in free cam also shows the helmet HUD, which we don't want
+		if (!GUIMode.IsHiddenMode() && InFreeCam)
+		{
+			_instance._hud.SetActive(false);
+		}
+	}
+
+	public static void Write(string msg) => _instance.ModHelper.Console.WriteLine($"[FreeCam] : {msg}", MessageType.Info);
+	public static void WriteError(string msg) => _instance.ModHelper.Console.WriteLine($"[FreeCam] : {msg}", MessageType.Error);
 }

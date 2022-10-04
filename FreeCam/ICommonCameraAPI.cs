@@ -1,12 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-namespace FreeCam
+namespace FreeCam;
+
+public interface ICommonCameraAPI
 {
-	public interface ICommonCameraAPI
-	{
-		(OWCamera, Camera) CreateCustomCamera(string name, Action<OWCamera> postInitMethod);
-		void ExitCamera(OWCamera OWCamera);
-		void EnterCamera(OWCamera OWCamera);
-	}
+	(OWCamera, Camera) CreateCustomCamera(string name, Action<OWCamera> postInitMethod);
+	void ExitCamera(OWCamera OWCamera);
+	void EnterCamera(OWCamera OWCamera);
 }
