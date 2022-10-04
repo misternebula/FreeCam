@@ -73,7 +73,7 @@ public class FreeCamController : MonoBehaviour
 
         if (Keyboard.current[GUIKey].wasPressedThisFrame)
         {
-            GUIMode.SetRenderMode(GUIMode.IsHiddenMode() ? GUIMode.RenderMode.FPS : GUIMode.RenderMode.Hidden);
+            MainClass.ToggleHUD();
         }
 
         if (Keyboard.current[ToggleKey].wasPressedThisFrame || Keyboard.current[ToggleKeyAlt].wasPressedThisFrame)

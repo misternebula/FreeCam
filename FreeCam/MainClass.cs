@@ -122,11 +122,27 @@ class MainClass : ModBehaviour
 		if (InFreeCam)
 		{
 			_instance._commonCameraAPI.ExitCamera(_instance._owCamera);
-			_instance._hud.SetActive(true);
+
+			// Only re-enable the helmet HUD if we aren't already hiding the GUI
+			if (!GUIMode.IsHiddenMode())
+			{
+				_instance._hud.SetActive(true);
+			}
 		}
 		else
 		{
 			_instance._commonCameraAPI.EnterCamera(_instance._owCamera);
+			_instance._hud.SetActive(false);
+		}
+	}
+
+	public static void ToggleHUD()
+	{
+		GUIMode.SetRenderMode(GUIMode.IsHiddenMode() ? GUIMode.RenderMode.FPS : GUIMode.RenderMode.Hidden);
+
+		// Turning the HUD back on while in free cam also shows the helmet HUD, which we don't want
+		if (!GUIMode.IsHiddenMode() && InFreeCam)
+		{
 			_instance._hud.SetActive(false);
 		}
 	}
