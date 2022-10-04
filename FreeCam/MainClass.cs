@@ -122,12 +122,12 @@ class MainClass : ModBehaviour
 		if (InFreeCam)
 		{
 			_instance._commonCameraAPI.ExitCamera(_instance._owCamera);
-			_instance._hud.SetActive(false);
+			_instance._hud.SetActive(true);
 		}
 		else
 		{
 			_instance._commonCameraAPI.EnterCamera(_instance._owCamera);
-			_instance._hud.SetActive(true);
+			_instance._hud.SetActive(false);
 		}
 	}
 
