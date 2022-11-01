@@ -17,16 +17,16 @@ Keyboard keys are shown in game with button prompts (can be hidden in the mod op
 |  | Scroll Up/Down | Movement Speed |
 |  | WASD | Movement |
 |  | Q / E | Rotate left / right |
-| Keypad 0 | 0 | Lock onto player |
-| Keypad 1 | 1 | Lock onto the sun |
-| Keypad 2 | 2 | Lock onto the Interloper |
-| Keypad 3 | 3 | Lock onto Ember Twin |
-| Keypad 4 | 4 | Lock onto Ash Twin |
-| Keypad 5 | 5 | Lock onto Timber Hearth |
-| Keypad 6 | 6 | Lock onto Brittle Hollow |
-| Keypad 7 | 7 | Lock onto Giant's Deep |
-| Keypad 8 | 8 | Lock onto Dark Bramble |
-| Keypad 9 | 9 | Lock onto The Stranger |
+| T + Keypad 0 | T + 0 | Lock onto player |
+| T + Keypad 1 | T + 1 | Lock onto the sun |
+| T + Keypad 2 | T + 2 | Lock onto the Interloper |
+| T + Keypad 3 | T + 3 | Lock onto Ember Twin |
+| T + Keypad 4 | T + 4 | Lock onto Ash Twin |
+| T + Keypad 5 | T + 5 | Lock onto Timber Hearth |
+| T + Keypad 6 | T + 6 | Lock onto Brittle Hollow |
+| T + Keypad 7 | T + 7 | Lock onto Giant's Deep |
+| T + Keypad 8 | T + 8 | Lock onto Dark Bramble |
+| T + Keypad 9 | T + 9 | Lock onto The Stranger |
 |  | F | Toggle flashlight |
 |  | [ or ] | Increase/decrease light range |
 |  | Down arrow | Reset move speed to 0.1 |
