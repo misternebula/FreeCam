@@ -69,12 +69,10 @@ jobs:
               uses: "actions/upload-artifact@v3"
               with:
                 name: "${{ env.PROJ_USERNAME }}.${{ env.PROJ_NAME }}"
-                path: "${{ env.PROJ_NAME }}/Build/net48"
+                path: "${{ env.PROJ_NAME }}/bin/Release"
 
             - name: Zip For Release
-              run: |
-                cd ${{ env.PROJ_NAME }}/Build/net48/ 
-                7z a ${{ env.PROJ_USERNAME }}.${{ env.PROJ_NAME }}.zip **
+              run: 7z a ${{ env.PROJ_USERNAME }}.${{ env.PROJ_NAME }}.zip ${{ env.PROJ_NAME }}/bin/Release/**
 
             - name: Create Release
               uses: "ncipollo/release-action@v1"
@@ -84,6 +82,6 @@ jobs:
                 tag: v${{ needs.pre_job.outputs.version }}
                 name: Version ${{ needs.pre_job.outputs.version }}
                 omitBodyDuringUpdate: true
-                artifacts: "${{ env.PROJ_NAME }}/Build/net48/${{ env.PROJ_USERNAME}}.${{ env.PROJ_NAME }}.zip"
+                artifacts: "${{ env.PROJ_USERNAME}}.${{ env.PROJ_NAME }}.zip"
                 draft: true
                 prerelease: ${{ inputs.prerelease }}
