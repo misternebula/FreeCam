@@ -4,7 +4,7 @@
   "author": "_nebula & xen",
   "name": "FreeCam",
   "uniqueName": "misternebula.FreeCam",
-  "version": "2.6.0",
-  "owmlVersion": "2.7.2",
-  "dependencies": [ "xen.CommonCameraUtility" ]
+  "version": "2.7.0",
+  "owmlVersion": "2.9.8",
+	"dependencies": [ "xen.CommonCameraUtility", "JohnCorby.VanillaFix" ]
 }
