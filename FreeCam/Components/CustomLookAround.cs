@@ -10,6 +10,7 @@ public class CustomLookAround : MonoBehaviour
     private float _degreesY;
     private float _moveX;
     private float _moveY;
+    private float _moveZ;
 
     private float _moveSpeed = 0.1f;
 
@@ -38,10 +39,15 @@ public class CustomLookAround : MonoBehaviour
         _moveX = move.x;
         _moveY = move.y;
 
+        var up = InputLibrary.thrustUp.IsPressed() ? 1 : 0;
+        var down = InputLibrary.thrustDown.IsPressed() ? 1 : 0;
+        _moveZ = up * 1.0f - down * 1.0f;
+
         transform.Rotate(Vector3.up, _degreesX);
         transform.Rotate(Vector3.right, -_degreesY);
         transform.position += _moveY * (transform.forward * 0.02f * _moveSpeed);
         transform.position += _moveX * (transform.right * 0.02f * _moveSpeed);
+        transform.position += _moveZ * (transform.up * 0.02f * _moveSpeed);
 
         if (Keyboard.current[Key.Q].isPressed)
         {
