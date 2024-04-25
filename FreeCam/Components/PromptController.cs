@@ -7,7 +7,7 @@ namespace FreeCam.Components;
 
 public class PromptController : MonoBehaviour
 {
-    private ScreenPrompt _togglePrompt, _guiPrompt, _teleportOptions, _scrollPrompt, _rotatePrompt;
+    private ScreenPrompt _togglePrompt, _guiPrompt, _teleportOptions, _scrollPrompt, _rotatePrompt, _horizontalPrompt, _verticalPrompt;
     private ScreenPrompt _centerPrompt;
     private List<ScreenPrompt> _planetPrompts;
 
@@ -34,6 +34,12 @@ public class PromptController : MonoBehaviour
 
         _scrollPrompt = new ScreenPrompt(_scrollCmd, _resetCmd, "Movement speed   <CMD1> Reset   <CMD2>", ScreenPrompt.MultiCommandType.CUSTOM_BOTH);
         Locator.GetPromptManager().AddScreenPrompt(_scrollPrompt, PromptPosition.UpperLeft, false);
+
+        _horizontalPrompt = new ScreenPrompt(InputLibrary.moveXZ, "Move   <CMD>");
+        Locator.GetPromptManager().AddScreenPrompt(_horizontalPrompt, PromptPosition.UpperLeft, false);
+
+        _verticalPrompt = new ScreenPrompt(InputLibrary.thrustUp, InputLibrary.thrustDown, "Up/Down   <CMD>", ScreenPrompt.MultiCommandType.POS_NEG);
+        Locator.GetPromptManager().AddScreenPrompt(_verticalPrompt, PromptPosition.UpperLeft, false);
 
         _rotatePrompt = new ScreenPrompt(_rotateLeftCmd, _rotateRightCmd, "Rotate   <CMD1> <CMD2>", ScreenPrompt.MultiCommandType.CUSTOM_BOTH);
         Locator.GetPromptManager().AddScreenPrompt(_rotatePrompt, PromptPosition.UpperLeft, false);
@@ -74,6 +80,8 @@ public class PromptController : MonoBehaviour
 
         _guiPrompt.SetVisibility(visible && MainClass.InFreeCam);
         _scrollPrompt.SetVisibility(visible && MainClass.InFreeCam);
+        _horizontalPrompt.SetVisibility(visible && MainClass.InFreeCam);
+        _verticalPrompt.SetVisibility(visible && MainClass.InFreeCam);
         _rotatePrompt.SetVisibility(visible && MainClass.InFreeCam);
 
         // Top left
