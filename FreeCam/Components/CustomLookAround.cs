@@ -12,7 +12,7 @@ public class CustomLookAround : MonoBehaviour
     private float _moveY;
     private float _moveZ;
 
-    private float _moveSpeed = 0.1f;
+    private float _moveSpeed = 1f;
 
     void Start() => Cursor.lockState = CursorLockMode.Locked;
 
@@ -49,12 +49,12 @@ public class CustomLookAround : MonoBehaviour
 
         if (Keyboard.current[Key.Q].isPressed)
         {
-            transform.Rotate(Vector3.forward, 0.25f);
+            transform.Rotate(Vector3.forward, (float)Math.Log(_moveSpeed * 0.1f + 1));
         }
 
         if (Keyboard.current[Key.E].isPressed)
         {
-            transform.Rotate(Vector3.forward, -0.25f);
+            transform.Rotate(Vector3.forward, -(float)Math.Log(_moveSpeed * 0.1f + 1));
         }
     }
 }
