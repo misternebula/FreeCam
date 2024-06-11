@@ -66,6 +66,8 @@ internal class UIInputCommands : IInputCommands
 
 	public float PressDuration => throw new NotImplementedException();
 
+	public int XInversionFactor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
 	public event Action OnStarted;
 	public event Action OnPerformed;
 	public event Action OnCancelled;
@@ -91,5 +93,9 @@ internal class UIInputCommands : IInputCommands
 	public bool IsPressed(float minPressDuration = 0) => false;
 
 	public void Update() { }
+
+	public void FixedUpdate() { }
+
+	public void ResetState() { }
 	#endregion
 }
