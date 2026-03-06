@@ -12,7 +12,10 @@ public class CustomLookAround : MonoBehaviour
     private float _moveY;
     private float _moveZ;
 
-    private float _moveSpeed = 1f;
+    private float _moveSpeed = 5f;
+    public float MoveSpeed {
+        get { return _moveSpeed; }
+    }
 
     void Start() => Cursor.lockState = CursorLockMode.Locked;
 
@@ -23,29 +26,40 @@ public class CustomLookAround : MonoBehaviour
             return;
         }
 
-        var scrollInOut = Mouse.current.scroll.y.ReadValue();
-        _moveSpeed = Math.Max(_moveSpeed + scrollInOut * 0.05f, 0f);
+        var scrollInOut =
+            Math.Max(-1f, Math.Min(1f, Mouse.current.scroll.y.ReadValue())) +
+            InputLibrary.toolOptionUp.GetValue() - InputLibrary.toolOptionDown.GetValue();
+        _moveSpeed = (float)Math.Pow(Math.E, Math.Log(_moveSpeed) + scrollInOut * 0.1f);
 
         if (Keyboard.current[Key.DownArrow].wasPressedThisFrame)
         {
-            _moveSpeed = 0.1f;
+            _moveSpeed = 5f;
         }
 
-        var look = InputLibrary.look.GetAxisValue(true);
-        _degreesY = look.y * 2f;
-        _degreesX = look.x * 2f;
+        var lookRate = OWInput.UsingGamepad() ? PlayerCameraController.GAMEPAD_LOOK_RATE_Y : PlayerCameraController.LOOK_RATE;
+        
+        // Possibly this should use the ship input version? Since the freecam controls are more like flight
+        var look = OWInput.GetAxisValue(InputLibrary.look, InputMode.All);
+        _degreesY = look.y * lookRate * Time.unscaledDeltaTime;
+        _degreesX = look.x * lookRate * Time.unscaledDeltaTime;
 
         var move = InputLibrary.moveXZ.GetAxisValue(false);
-        _moveX = move.x;
-        _moveZ = move.y;
+        _moveX = move.x * _moveSpeed * Time.unscaledDeltaTime;
+        _moveZ = move.y * _moveSpeed * Time.unscaledDeltaTime;
 
-        _moveY = OWInput.GetValue(InputLibrary.thrustUp) - OWInput.GetValue(InputLibrary.thrustDown);
+        _moveY = (OWInput.GetValue(InputLibrary.thrustUp) - OWInput.GetValue(InputLibrary.thrustDown)) * _moveSpeed * Time.unscaledDeltaTime;
 
-        transform.Rotate(Vector3.up, _degreesX);
+        if (OWInput.IsPressed(InputLibrary.rollMode)) {
+            transform.Rotate(Vector3.forward, -_degreesX);
+        }
+        else {
+            transform.Rotate(Vector3.up, _degreesX);
+        }
         transform.Rotate(Vector3.right, -_degreesY);
-        transform.position += _moveZ * (transform.forward * 0.02f * _moveSpeed);
-        transform.position += _moveX * (transform.right * 0.02f * _moveSpeed);
-        transform.position += _moveY * (transform.up * 0.02f * _moveSpeed);
+
+        transform.position += _moveZ * transform.forward;
+        transform.position += _moveX * transform.right;
+        transform.position += _moveY * transform.up;
 
         if (Keyboard.current[Key.Q].isPressed)
         {

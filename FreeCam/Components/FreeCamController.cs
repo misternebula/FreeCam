@@ -28,8 +28,11 @@ public class FreeCamController : MonoBehaviour
     };
 
     public const Key TeleportKey = Key.T;
+    public const Key ReparentKey = Key.Y;
 
     public static bool HoldingTeleport { get; private set; }
+
+    public void Start() => ParentToPlayer(true);
 
     public void Update()
     {
@@ -49,14 +52,13 @@ public class FreeCamController : MonoBehaviour
         }
 
         HoldingTeleport = false;
-        if (Keyboard.current[TeleportKey].isPressed)
+        if (Keyboard.current[TeleportKey].isPressed || Keyboard.current[ReparentKey].isPressed)
         {
             HoldingTeleport = true;
 
             if (Keyboard.current[CenterOnPlayerKey].wasPressedThisFrame || Keyboard.current[CenterOnPlayerKeyAlt].wasPressedThisFrame)
             {
-                transform.parent = Locator.GetPlayerTransform();
-                transform.position = Locator.GetPlayerTransform().position;
+                ParentToPlayer(Keyboard.current[TeleportKey].isPressed);
             }
 
             foreach (var planet in CenterOnPlanetKey.Keys)
@@ -64,9 +66,7 @@ public class FreeCamController : MonoBehaviour
                 var (key, alt) = CenterOnPlanetKey[planet];
                 if (Keyboard.current[key].wasPressedThisFrame || Keyboard.current[alt].wasPressedThisFrame)
                 {
-                    var go = Locator.GetAstroObject(planet).gameObject.transform;
-                    transform.parent = go;
-                    transform.position = go.position;
+                    ParentToAstroObject(Locator.GetAstroObject(planet), Keyboard.current[TeleportKey].isPressed);
                 }
             }
         }
@@ -79,6 +79,25 @@ public class FreeCamController : MonoBehaviour
         if (Keyboard.current[ToggleKey].wasPressedThisFrame || Keyboard.current[ToggleKeyAlt].wasPressedThisFrame)
         {
             MainClass.ToggleFreeCam();
+        }
+    }
+
+    public void ParentToPlayer(bool warp = false)
+    {
+        var playerCameraTransform = Locator.GetPlayerCamera().transform;
+        transform.parent = playerCameraTransform;
+        if (warp) {
+            transform.position = playerCameraTransform.position;
+            transform.rotation = playerCameraTransform.rotation;
+        }
+    }
+
+    public void ParentToAstroObject(AstroObject astroObject, bool warp = false)
+    {
+        var astroObjectTransform = astroObject.gameObject.transform;
+        transform.parent = astroObjectTransform;
+        if (warp) {
+            transform.position = astroObjectTransform.position;
         }
     }
 }
