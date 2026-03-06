@@ -20,7 +20,8 @@ class MainClass : ModBehaviour
 
 	private InputMode _storedMode;
 	private int _fov;
-	private ICommonCameraAPI _commonCameraAPI;
+    private int _nearClipPlane;
+    private ICommonCameraAPI _commonCameraAPI;
 	private GameObject _hud;
 	private static MainClass _instance;
 
@@ -62,14 +63,17 @@ class MainClass : ModBehaviour
 	public override void Configure(IModConfig config)
 	{
 		_fov = config.GetSettingsValue<int>("FOV");
-		ShowPrompts = !config.GetSettingsValue<bool>("Hide Prompts");
+        _nearClipPlane = config.GetSettingsValue<int>("Near Clip Plane Distance");
+        ShowPrompts = !config.GetSettingsValue<bool>("Hide Prompts");
 
 		// If the mod is currently active we can set these immediately
 		if (_camera != null)
 		{
 			_camera.fieldOfView = _fov;
 			_owCamera.fieldOfView = _fov;
-		}
+            _camera.nearClipPlane = _nearClipPlane;
+            _owCamera.nearClipPlane = _nearClipPlane;
+        }
 	}
 
 	private void OnSceneLoaded(Scene scene, LoadSceneMode _)
