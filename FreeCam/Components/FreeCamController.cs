@@ -6,11 +6,6 @@ namespace FreeCam.Components;
 
 public class FreeCamController : MonoBehaviour
 {
-    public const Key ToggleKey = Key.Semicolon;
-    public const Key ToggleKeyAlt = Key.NumpadPeriod;
-
-    public const Key GUIKey = Key.Quote;
-
     public const Key CenterOnPlayerKey = Key.Digit0;
     public const Key CenterOnPlayerKeyAlt = Key.Numpad0;
 
@@ -71,12 +66,12 @@ public class FreeCamController : MonoBehaviour
             }
         }
 
-        if (Keyboard.current[GUIKey].wasPressedThisFrame)
+        if (OWInput.IsNewlyPressed(InputLibrary.GetInputCommand(MainClass.InputHideUI)))
         {
             MainClass.ToggleHUD();
         }
 
-        if (Keyboard.current[ToggleKey].wasPressedThisFrame || Keyboard.current[ToggleKeyAlt].wasPressedThisFrame)
+        if (OWInput.IsNewlyPressed(InputLibrary.GetInputCommand(MainClass.InputToggleFreeCam)))
         {
             MainClass.ToggleFreeCam();
         }

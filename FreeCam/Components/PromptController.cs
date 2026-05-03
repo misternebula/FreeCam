@@ -24,14 +24,14 @@ public class PromptController : MonoBehaviour
     private static readonly UIInputCommands _rangeDown = new("FREECAM - RangeDown", KeyCode.LeftBracket);
     private static readonly UIInputCommands _rangeUp = new("FREECAM - RangeUp", KeyCode.RightBracket);
 
-    private void Start()
+    public void Start()
     {
         _customFlashlight = GetComponent<CustomFlashlight>();
         _customLookAround = GetComponent<CustomLookAround>();
         
         // Top right
-        _togglePrompt = AddPrompt("Toggle FreeCam", PromptPosition.UpperLeft, FreeCamController.ToggleKey);
-        _guiPrompt = AddPrompt("Hide HUD", PromptPosition.UpperLeft, FreeCamController.GUIKey);
+        _togglePrompt = AddPrompt("Toggle FreeCam", PromptPosition.UpperLeft, InputLibrary.GetInputCommand(MainClass.InputToggleFreeCam));
+        _guiPrompt = AddPrompt("Hide HUD", PromptPosition.UpperLeft, InputLibrary.GetInputCommand(MainClass.InputHideUI));
 
         _scrollPromptKeyboard = AddPrompt("Change speed   <CMD1> Reset   <CMD2>", PromptPosition.UpperLeft, [_scrollCmd, _resetCmd], ScreenPrompt.MultiCommandType.CUSTOM_BOTH);
         _scrollPromptGamepad = AddPrompt("Change speed   <CMD>", PromptPosition.UpperLeft, [InputLibrary.toolOptionUp, InputLibrary.toolOptionDown], ScreenPrompt.MultiCommandType.POS_NEG);

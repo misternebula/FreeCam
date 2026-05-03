@@ -25,7 +25,11 @@ class MainClass : ModBehaviour
 	private GameObject _hud;
 	private static MainClass _instance;
 
-	public void Start()
+    public static InputConsts.InputCommandType InputToggleFreeCam { get; private set; }
+    public static InputConsts.InputCommandType InputHideUI { get; private set; }
+
+
+    public void Start()
 	{
 		Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 
@@ -51,7 +55,15 @@ class MainClass : ModBehaviour
 		GlobalMessenger<OWCamera>.AddListener("SwitchActiveCamera", OnSwitchActiveCamera);
 
 		SceneManager.sceneLoaded += OnSceneLoaded;
-	}
+
+        InputToggleFreeCam = this.ModHelper.RebindingHelper.RegisterRebindable("Toggle Freecam", "",
+            UnityEngine.InputSystem.Key.Semicolon,
+            OWML.Common.Enums.GamepadBinding.UpButton, false);
+
+        InputHideUI = this.ModHelper.RebindingHelper.RegisterRebindable("Toggle GUI", "",
+            UnityEngine.InputSystem.Key.Quote,
+            OWML.Common.Enums.GamepadBinding.UpButton, false);
+    }
 
 	void OnDestroy()
 	{
