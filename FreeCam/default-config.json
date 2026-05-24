@@ -1,8 +1,59 @@
 {
+  "$schema": "https://raw.githubusercontent.com/ow-mods/owml/master/schemas/config_schema.json",
   "enabled": true,
-    "settings": {
-        "FOV": 90,
-        "Near Clip Plane Distance": 1,
-        "Hide Prompts": false
+  "settings": {
+    "CameraSeparator": {
+      "type": "separator"
+    },
+    "CameraLabel": {
+      "type": "label",
+      "title": "Camera"
+    },
+    "FOV": {
+      "title": "FOV",
+      "type": "slider",
+      "min": 10,
+      "max": 170,
+      "value": 90,
+      "tooltip": "Field of view in degrees. Higher values widen the view, lower values zoom in."
+    },
+    "Near Clip Plane Distance": {
+      "title": "Near Clip Plane Distance",
+      "type": "number",
+      "value": 1,
+      "tooltip": "Minimum distance away from camera at which objects are rendered."
+    },
+    "Reset Parent": {
+      "title": "Reset Parent",
+      "type": "toggle",
+      "value": true,
+      "tooltip": "Whether the free cam will reparent itself to the player every time you toggle it on."
+    },
+    "PromptsSeparator": {
+      "type": "separator"
+    },
+    "PromptsLabel": {
+      "type": "label",
+      "title": "Button Prompts"
+    },
+    "Hide Prompts": {
+      "title": "Hide Button Prompts",
+      "type": "toggle",
+      "value": false,
+      "tooltip": "Hide all button prompts. (except toggle)"
+    },
+    "Hide Toggle Prompt": {
+      "title": "Hide Toggle Prompt",
+      "type": "toggle",
+      "value": false,
+      "tooltip": "Hide the toggle button prompt."
+    },
+    "ControlsSeparator": {
+      "type": "separator"
+    },
+    "ControlsLabel": {
+      "type": "label",
+      "title": "Controls"
     }
+  }
 }

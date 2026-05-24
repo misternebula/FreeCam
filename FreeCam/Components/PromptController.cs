@@ -8,8 +8,9 @@ namespace FreeCam.Components;
 public class PromptController : MonoBehaviour
 {
     private ScreenPrompt
-        _togglePrompt, _guiPrompt, _teleportOptions, _centerPlayerPrompt,
-        _scrollPromptKeyboard, _scrollPromptGamepad, _speedPrompt,
+        _togglePrompt, _guiPrompt,
+        _teleportOptions, _reparentOptions, _centerPlayerPrompt,
+        _resetPrompt, _scrollPrompt, _speedPrompt,
         _rotatePrompt, _horizontalPrompt, _verticalPrompt, _lookPrompt,
         _flashlightPrompt, _flashlightRangePrompt, _flashlightSpeedPrompt;
     private List<ScreenPrompt> _planetPrompts, _timePrompts;
@@ -17,117 +18,96 @@ public class PromptController : MonoBehaviour
     private CustomFlashlight _customFlashlight;
     private CustomLookAround _customLookAround;
 
-    private static readonly UIInputCommands _rotateLeftCmd = new("FREECAM - RotateLeft", KeyCode.Q);
-    private static readonly UIInputCommands _rotateRightCmd = new("FREECAM - RotateRight", KeyCode.E);
-    private static readonly UIInputCommands _scrollCmd = new("FREECAM - Scroll", KeyCode.Mouse2);
-    private static readonly UIInputCommands _resetCmd = new("FREECAM - Reset", KeyCode.DownArrow);
-    private static readonly UIInputCommands _rangeDown = new("FREECAM - RangeDown", KeyCode.LeftBracket);
-    private static readonly UIInputCommands _rangeUp = new("FREECAM - RangeUp", KeyCode.RightBracket);
-
-    private void Start()
+    public void Start()
     {
         _customFlashlight = GetComponent<CustomFlashlight>();
         _customLookAround = GetComponent<CustomLookAround>();
-        
-        // Top right
-        _togglePrompt = AddPrompt("Toggle FreeCam", PromptPosition.UpperLeft, FreeCamController.ToggleKey);
-        _guiPrompt = AddPrompt("Hide HUD", PromptPosition.UpperLeft, FreeCamController.GUIKey);
 
-        _scrollPromptKeyboard = AddPrompt("Change speed   <CMD1> Reset   <CMD2>", PromptPosition.UpperLeft, [_scrollCmd, _resetCmd], ScreenPrompt.MultiCommandType.CUSTOM_BOTH);
-        _scrollPromptGamepad = AddPrompt("Change speed   <CMD>", PromptPosition.UpperLeft, [InputLibrary.toolOptionUp, InputLibrary.toolOptionDown], ScreenPrompt.MultiCommandType.POS_NEG);
+        // Top Left
+        _togglePrompt = AddPrompt("Toggle FreeCam", PromptPosition.UpperLeft, MainClass.ToggleFreeCamBind);
+        _guiPrompt = AddPrompt("Hide HUD", PromptPosition.UpperLeft, MainClass.ToggleHUDBind);
+
+        _resetPrompt = AddPrompt("Reset", PromptPosition.UpperLeft, MainClass.CameraResetBind);
+        _scrollPrompt = AddPrompt("Change speed", PromptPosition.UpperLeft, MainClass.ChangeSpeedBind);
         _speedPrompt = AddPrompt("Speed: " + _customLookAround.MoveSpeed + " m/s", PromptPosition.UpperLeft);
 
         _rotatePrompt = AddPrompt(
-            UITextLibrary.GetString(UITextType.RollPrompt) + " <CMD1>" + UITextLibrary.GetString(UITextType.HoldPrompt) + "  +<CMD2>", PromptPosition.UpperLeft,
+            "<CMD1>" + UITextLibrary.GetString(UITextType.HoldPrompt) + "  +<CMD2>  " + UITextLibrary.GetString(UITextType.RollPrompt), PromptPosition.UpperLeft,
             [InputLibrary.rollMode, InputLibrary.look], ScreenPrompt.MultiCommandType.CUSTOM_BOTH
         );
 
-        _lookPrompt = AddPrompt(UITextLibrary.GetString(UITextType.LookPrompt) + "   <CMD>", PromptPosition.UpperLeft, InputLibrary.look);
-        _horizontalPrompt = AddPrompt(UITextLibrary.GetString(UITextType.MovePrompt) + "   <CMD>", PromptPosition.UpperLeft, InputLibrary.moveXZ);
-        _verticalPrompt = AddPrompt("Up/Down   <CMD>", PromptPosition.UpperLeft, [InputLibrary.thrustUp, InputLibrary.thrustDown], ScreenPrompt.MultiCommandType.POS_NEG);
-
-        // Top Left
-        _teleportOptions = AddPrompt("Parent options   <CMD>" + UITextLibrary.GetString(UITextType.HoldPrompt), PromptPosition.UpperRight, FreeCamController.TeleportKey);
-        _centerPlayerPrompt = AddPrompt("Player", PromptPosition.UpperRight, FreeCamController.CenterOnPlayerKey);
-
-        _planetPrompts = [];
-        foreach (var planet in FreeCamController.CenterOnPlanetKey.Keys)
-        {
-            _planetPrompts.Add(AddPrompt(AstroObject.AstroObjectNameToString(planet), PromptPosition.UpperRight, FreeCamController.CenterOnPlanetKey[planet].key));
-        }
+        _lookPrompt = AddPrompt(UITextLibrary.GetString(UITextType.LookPrompt), PromptPosition.UpperLeft, InputLibrary.look);
+        _horizontalPrompt = AddPrompt(UITextLibrary.GetString(UITextType.MovePrompt), PromptPosition.UpperLeft, InputLibrary.moveXZ);
+        _verticalPrompt = AddPrompt("Up/Down", PromptPosition.UpperLeft, [InputLibrary.thrustUp, InputLibrary.thrustDown], ScreenPrompt.MultiCommandType.POS_NEG);
 
         // Flashlight
-        _flashlightPrompt = AddPrompt(UITextLibrary.GetString(UITextType.FlashlightPrompt) + "   <CMD>" + UITextLibrary.GetString(UITextType.PressPrompt), PromptPosition.UpperLeft, InputLibrary.flashlight);
-        _flashlightRangePrompt = AddPrompt("Flashlight range   <CMD1> <CMD2>", PromptPosition.UpperLeft, [_rangeDown, _rangeUp], ScreenPrompt.MultiCommandType.CUSTOM_BOTH);
-        _flashlightSpeedPrompt = AddPrompt("Adjust range faster   <CMD>" + UITextLibrary.GetString(UITextType.HoldPrompt), PromptPosition.UpperLeft, Key.RightShift);
+        _flashlightPrompt = AddPrompt(UITextLibrary.GetString(UITextType.PressPrompt) + " " + UITextLibrary.GetString(UITextType.FlashlightPrompt), PromptPosition.UpperLeft, InputLibrary.flashlight);
+        _flashlightRangePrompt = AddPrompt("Flashlight range", PromptPosition.UpperLeft, MainClass.FlashlightRangeBind);
+        _flashlightSpeedPrompt = AddPrompt(UITextLibrary.GetString(UITextType.HoldPrompt) + " Adjust range faster", PromptPosition.UpperLeft, MainClass.FlashlightSpeedBind);
 
+        // Time
         _timePrompts = [
-            AddPrompt("0% game speed", PromptPosition.LowerLeft, Key.Comma),
-            AddPrompt("50% game speed", PromptPosition.LowerLeft, Key.Period),
-            AddPrompt("100% game speed", PromptPosition.LowerLeft, Key.Slash)
+            AddPrompt("0% game speed", PromptPosition.LowerLeft, MainClass.Time0Bind),
+            AddPrompt("50% game speed", PromptPosition.LowerLeft, MainClass.Time50Bind),
+            AddPrompt("100% game speed", PromptPosition.LowerLeft, MainClass.Time100Bind)
         ];
+
+        // Top Right
+        _teleportOptions = AddPrompt("Teleport options   <CMD>" + UITextLibrary.GetString(UITextType.HoldPrompt), PromptPosition.UpperRight, MainClass.TeleportBind);
+        _reparentOptions = AddPrompt("Parent options   <CMD>" + UITextLibrary.GetString(UITextType.HoldPrompt), PromptPosition.UpperRight, MainClass.ReparentBind);
+        _centerPlayerPrompt = AddPrompt("Player", PromptPosition.UpperRight, MainClass.CenterOnPlayerBind);
+
+        _planetPrompts = [];
+        foreach (var planet in MainClass.CenterOnPlanetBindTypes.Keys)
+        {
+            _planetPrompts.Add(AddPrompt(AstroObject.AstroObjectNameToString(planet), PromptPosition.UpperRight, MainClass.GetCenterOnPlanetBind(planet)));
+        }
     }
 
-    private void Update()
+    public void Update()
     {
-        var visible = !OWTime.IsPaused() && !GUIMode.IsHiddenMode() && PlayerData.GetPromptsEnabled() && MainClass.ShowPrompts;
+        var baseVisible = !OWTime.IsPaused() && !GUIMode.IsHiddenMode() && PlayerData.GetPromptsEnabled();
+        var toggleVisible = baseVisible && MainClass.ShowTogglePrompt;
+        var otherVisible = baseVisible && MainClass.ShowPrompts && MainClass.InFreeCam;
 
-        // Top right
-        _togglePrompt.SetVisibility(visible);
-        _guiPrompt.SetVisibility(visible && MainClass.InFreeCam);
+        // Top Left
+        _togglePrompt.SetVisibility(toggleVisible);
+        _guiPrompt.SetVisibility(otherVisible);
 
-        var usingGamepad = Locator.GetPromptManager()._usingGamepad;
-        _scrollPromptGamepad.SetVisibility(visible && MainClass.InFreeCam && usingGamepad);
-        _scrollPromptKeyboard.SetVisibility(visible && MainClass.InFreeCam && !usingGamepad);
+        _scrollPrompt.SetVisibility(otherVisible);
+        _resetPrompt.SetVisibility(otherVisible);
 
-        _speedPrompt.SetVisibility(visible && MainClass.InFreeCam);
+        _speedPrompt.SetVisibility(otherVisible);
         var moveSpeed = _customLookAround.MoveSpeed;
         string moveSpeedString;
         if (moveSpeed < 0.01f || moveSpeed > 100f) { moveSpeedString = moveSpeed.ToString("0.000e0"); }
         else { moveSpeedString = moveSpeed.ToString("0.000"); }
         _speedPrompt.SetText("Speed: " + moveSpeedString + " m/s");
 
-        _rotatePrompt.SetVisibility(visible && MainClass.InFreeCam);
-        _lookPrompt.SetVisibility(visible && MainClass.InFreeCam);
-        _horizontalPrompt.SetVisibility(visible && MainClass.InFreeCam);
-        _verticalPrompt.SetVisibility(visible && MainClass.InFreeCam);
-
-        // Top left
-        _teleportOptions.SetVisibility(visible && MainClass.InFreeCam);
-        _centerPlayerPrompt.SetVisibility(visible && MainClass.InFreeCam && FreeCamController.HoldingTeleport);
-        foreach (var planetPrompt in _planetPrompts)
-        {
-            planetPrompt.SetVisibility(visible && MainClass.InFreeCam && FreeCamController.HoldingTeleport);
-        }
+        _rotatePrompt.SetVisibility(otherVisible);
+        _lookPrompt.SetVisibility(otherVisible);
+        _horizontalPrompt.SetVisibility(otherVisible);
+        _verticalPrompt.SetVisibility(otherVisible);
 
         // Flashlight
-        _flashlightPrompt.SetVisibility(visible && MainClass.InFreeCam);
-        _flashlightRangePrompt.SetVisibility(visible && MainClass.InFreeCam && _customFlashlight.FlashlightOn());
-        _flashlightSpeedPrompt.SetVisibility(visible && MainClass.InFreeCam && _customFlashlight.FlashlightOn());
+        _flashlightPrompt.SetVisibility(otherVisible);
+        _flashlightRangePrompt.SetVisibility(otherVisible && _customFlashlight.FlashlightOn());
+        _flashlightSpeedPrompt.SetVisibility(otherVisible && _customFlashlight.FlashlightOn());
 
         // Time
         foreach (var prompt in _timePrompts)
         {
-            prompt.SetVisibility(visible && MainClass.InFreeCam);
+            prompt.SetVisibility(otherVisible);
         }
-    }
 
-    private static ScreenPrompt AddPrompt(string text, PromptPosition position, Key key)
-    {
-        Enum.TryParse(key.ToString().Replace("Digit", "Alpha"), out KeyCode keyCode);
-        return AddPrompt(text, position, keyCode);
-    }
-
-    private static ScreenPrompt AddPrompt(string text, PromptPosition position, KeyCode keyCode)
-    {
-        var texture = ButtonPromptLibrary.SharedInstance.GetButtonTexture(keyCode);
-        var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100, 0, SpriteMeshType.FullRect, Vector4.zero, false);
-        sprite.name = texture.name;
-
-        var prompt = new ScreenPrompt(text, sprite);
-        Locator.GetPromptManager().AddScreenPrompt(prompt, position, false);
-
-        return prompt;
+        // Top Right
+        _teleportOptions.SetVisibility(otherVisible);
+        _reparentOptions.SetVisibility(otherVisible);
+        _centerPlayerPrompt.SetVisibility(otherVisible && FreeCamController.HoldingTeleport);
+        foreach (var planetPrompt in _planetPrompts)
+        {
+            planetPrompt.SetVisibility(otherVisible && FreeCamController.HoldingTeleport);
+        }
     }
 
     private static ScreenPrompt AddPrompt(string text, PromptPosition position, IInputCommands cmd)
