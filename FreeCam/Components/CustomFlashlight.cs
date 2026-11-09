@@ -9,6 +9,7 @@ public class CustomFlashlight : MonoBehaviour
     private Light _light;
 
     private static float _range = 1000f;
+    public static float Range { get { return _range; } }
 
     private static readonly float _minRange = 5f;
     private static readonly float _maxRange = 5000f;
@@ -54,13 +55,13 @@ public class CustomFlashlight : MonoBehaviour
         // Adjust range of the light
         var rate = OWInput.IsPressed(MainClass.FlashlightSpeedBind) ? _fastRangeAdjust : _slowRangeAdjust;
 
-        var rangeValue = OWInput.GetValue(MainClass.FlashlightRangeBind);
+        var rangeValue = -OWInput.GetValue(MainClass.FlashlightRangeBind);
         //if (rangeValue != 0)
         //{
         //    MainClass.Write($"Range bind: {rangeValue}");
         //}
 
-        _range = Mathf.Clamp(_range + (rangeValue * rate) * Time.deltaTime, _minRange, _maxRange);
+        _range = Mathf.Clamp(_range + (rangeValue * rate) * Time.unscaledDeltaTime, _minRange, _maxRange);
         _light.range = _range;
     }
 

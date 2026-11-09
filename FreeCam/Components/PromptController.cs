@@ -42,7 +42,7 @@ public class PromptController : MonoBehaviour
 
         // Flashlight
         _flashlightPrompt = AddPrompt(UITextLibrary.GetString(UITextType.PressPrompt) + " " + UITextLibrary.GetString(UITextType.FlashlightPrompt), PromptPosition.UpperLeft, InputLibrary.flashlight);
-        _flashlightRangePrompt = AddPrompt("Flashlight range", PromptPosition.UpperLeft, MainClass.FlashlightRangeBind);
+        _flashlightRangePrompt = AddPrompt("Flashlight range: " + CustomFlashlight.Range + " m", PromptPosition.UpperLeft, MainClass.FlashlightRangeBind);
         _flashlightSpeedPrompt = AddPrompt(UITextLibrary.GetString(UITextType.HoldPrompt) + " Adjust range faster", PromptPosition.UpperLeft, MainClass.FlashlightSpeedBind);
 
         // Time
@@ -83,6 +83,9 @@ public class PromptController : MonoBehaviour
         if (moveSpeed < 0.01f || moveSpeed > 100f) { moveSpeedString = moveSpeed.ToString("0.000e0"); }
         else { moveSpeedString = moveSpeed.ToString("0.000"); }
         _speedPrompt.SetText("Speed: " + moveSpeedString + " m/s");
+
+        _flashlightRangePrompt.SetText("Flashlight range: " + CustomFlashlight.Range.ToString("0.0") + " m");
+
 
         _rotatePrompt.SetVisibility(otherVisible);
         _lookPrompt.SetVisibility(otherVisible);

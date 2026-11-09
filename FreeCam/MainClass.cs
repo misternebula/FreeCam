@@ -143,7 +143,7 @@ class MainClass : ModBehaviour
 		FlashlightSpeedBindType = ModHelper.RebindingHelper.RegisterRebindable(
 			"Flashlight Fast Adjust",
 			"Hold to adjust flashlight range faster.",
-			Key.LeftShift,
+			Key.Backslash,
 			GamepadBinding.None,
 			false
 		);
