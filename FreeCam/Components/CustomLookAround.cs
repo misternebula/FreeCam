@@ -13,33 +13,44 @@ public class CustomLookAround : MonoBehaviour
     private float _moveZ;
 
     private float _moveSpeed = 5f;
-    public float MoveSpeed {
+    public float MoveSpeed
+    {
         get { return _moveSpeed; }
     }
 
-    void Start() => Cursor.lockState = CursorLockMode.Locked;
-
-    void Update()
+    public void Awake()
     {
-        if (OWInput.GetInputMode() != InputMode.None)
-        {
-            return;
-        }
+        MainClass.OnFreeCamEntered.AddListener(ResetMoveSpeed);
+    }
 
-        var scrollInOut =
-            Math.Max(-1f, Math.Min(1f, Mouse.current.scroll.y.ReadValue())) +
-            InputLibrary.toolOptionUp.GetValue() - InputLibrary.toolOptionDown.GetValue();
+    public void OnDestroy()
+    {
+        MainClass.OnFreeCamEntered.RemoveListener(ResetMoveSpeed);
+    }
+
+    public void Start() => Cursor.lockState = CursorLockMode.Locked;
+
+    public void Update()
+    {
+        if (OWTime.IsPaused() || !MainClass.InFreeCam) return;
+
+        var scrollValue = OWInput.GetValue(MainClass.ChangeSpeedBind);
+        //if (scrollValue != 0)
+        //{
+        //    MainClass.Write($"Scroll bind: {scrollValue}");
+        //}
+        var scrollInOut = Math.Max(-1f, Math.Min(1f, scrollValue));
         _moveSpeed = (float)Math.Pow(Math.E, Math.Log(_moveSpeed) + scrollInOut * 0.1f);
 
-        if (Keyboard.current[Key.DownArrow].wasPressedThisFrame)
+        if (OWInput.IsNewlyPressed(MainClass.CameraResetBind))
         {
-            _moveSpeed = 5f;
+            ResetMoveSpeed();
         }
 
         var lookRate = OWInput.UsingGamepad() ? PlayerCameraController.GAMEPAD_LOOK_RATE_Y : PlayerCameraController.LOOK_RATE;
-        
+
         // Possibly this should use the ship input version? Since the freecam controls are more like flight
-        var look = OWInput.GetAxisValue(InputLibrary.look, InputMode.All);
+        var look = OWInput.GetAxisValue(InputLibrary.look);
         _degreesY = look.y * lookRate * Time.unscaledDeltaTime;
         _degreesX = look.x * lookRate * Time.unscaledDeltaTime;
 
@@ -49,10 +60,12 @@ public class CustomLookAround : MonoBehaviour
 
         _moveY = (OWInput.GetValue(InputLibrary.thrustUp) - OWInput.GetValue(InputLibrary.thrustDown)) * _moveSpeed * Time.unscaledDeltaTime;
 
-        if (OWInput.IsPressed(InputLibrary.rollMode)) {
+        if (OWInput.IsPressed(InputLibrary.rollMode))
+        {
             transform.Rotate(Vector3.forward, -_degreesX);
         }
-        else {
+        else
+        {
             transform.Rotate(Vector3.up, _degreesX);
         }
         transform.Rotate(Vector3.right, -_degreesY);
@@ -60,15 +73,10 @@ public class CustomLookAround : MonoBehaviour
         transform.position += _moveZ * transform.forward;
         transform.position += _moveX * transform.right;
         transform.position += _moveY * transform.up;
+    }
 
-        if (Keyboard.current[Key.Q].isPressed)
-        {
-            transform.Rotate(Vector3.forward, (float)Math.Log(_moveSpeed * 0.1f + 1));
-        }
-
-        if (Keyboard.current[Key.E].isPressed)
-        {
-            transform.Rotate(Vector3.forward, -(float)Math.Log(_moveSpeed * 0.1f + 1));
-        }
+    public void ResetMoveSpeed()
+    {
+        _moveSpeed = 5f;
     }
 }
